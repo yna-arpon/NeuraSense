@@ -1,0 +1,11 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore dist directory (compiled output)
+dist/
+
+# Ignore log files
+*.log
+
+# Ignore build artifacts
+*.tsbuildinfo
