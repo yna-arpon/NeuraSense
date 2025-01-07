@@ -1,6 +1,7 @@
 import { app, ipcMain, BrowserWindow } from "electron"
 import path from "path";
 
+const isDev = process.env.NODE_ENV !== 'production'
 let mainWindow : BrowserWindow;
 
 app.on("ready", createWindows);
@@ -15,6 +16,13 @@ function createWindows(): void {
         show: false
     });
 
-    mainWindow.loadFile(path.join(__dirname, "../src/index.html"));
+    // Open dev tools if in dev env 
+    if(isDev) {
+        mainWindow.webContents.openDevTools();
+    }
+
+    console.log(__dirname)
+
+    mainWindow.loadFile(path.join(__dirname, "./pages/home/home.html"));
     mainWindow.on("ready-to-show", () => mainWindow.show())
 }
