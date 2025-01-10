@@ -1,14 +1,14 @@
 {
   "name": "neurasense",
   "version": "1.0.0",
-  "description": "",
+  "description": "Stroke assesments for pediatric patients on ECMO",
   "main": "./dist/main.js",
   "scripts": {
     "build": "rimraf ./dist && tsc && copyfiles -u 1 \"./src/**/*.html\" ./dist",
     "start": "npm run build && electron ."
   },
   "keywords": [],
-  "author": "",
+  "author": "Yna Arpon",
   "license": "ISC",
   "devDependencies": {
     "@types/electron": "^1.4.38",

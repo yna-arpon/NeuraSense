@@ -8,13 +8,17 @@
 <body>
     <h1>NeuraSense Home Page!</h1>
     <div>
-        <button>Start Recording</button>
-        <button>History</button>
-        <button>Settings</button>
-        <button>Help</button>
+        <button class="pageBtn" id="recordingPageBtn">Start Recording</button>
+        <button class="pageBtn" id="historyPageBtn">History</button>
+        <button class="pageBtn" id="settingsPageBtn">Settings</button>
+        <button class="pageBtn" id="helpPageBtn">Help</button>
     </div>
 
-     <!-- This script will be bundled/compiled and linked when running the Electron app -->
+
+    <!-- This is a hack to work around commonJs support -->
+    <script>
+        var exports = {};
+    </script>
     <script src="home.js"></script>
 </body>
 </html>
