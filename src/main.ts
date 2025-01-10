@@ -1,4 +1,4 @@
-import { app, ipcMain, BrowserWindow } from "electron"
+import { app, ipcMain, BrowserWindow, shell} from "electron"
 import path from "path";
 
 const isDev = process.env.NODE_ENV !== "production"
@@ -53,7 +53,8 @@ ipcMain.on("goToPage", (event, page) => {
                     pageFile = path.join(__dirname, "./pages/settings/settings.html");
                     break
                 case "help":
-                    pageFile = path.join(__dirname, "./pages/help/help.html");
+                    let externalURL = "http://google.com" // To be changed with NeuraSense landing page
+                    shell.openExternal(externalURL)
                     break
                 default:
                     console.log(`[Main Process] Unknown Page ${page}`)
