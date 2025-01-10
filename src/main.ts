@@ -43,6 +43,9 @@ ipcMain.on("goToPage", (event, page) => {
 
             let pageFile
             switch (page) {
+                case "home":
+                    pageFile = path.join(__dirname, "./pages/home/home.html");
+                    break 
                 case "recording":
                     pageFile = path.join(__dirname, "./pages/recording/recording.html");
                     break
