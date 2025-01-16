@@ -2,7 +2,7 @@ import { ipcRenderer } from "electron";
 import { NavBar } from "../../components/navbar";
 
 const homeNavBtns = document.querySelectorAll<HTMLButtonElement>(".pageBtn");
-const navBarContainer = document.getElementById("navBar")
+const navBarContainer = document.getElementById("navBarDiv")
 
 // Append navigation bar
 const navBar = new NavBar()

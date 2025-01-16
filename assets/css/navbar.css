@@ -1,0 +1,37 @@
+#navBar {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    max-width: fit-content;
+    gap: 5px;
+}
+
+.navBtn {
+    background: none;
+    border: solid;
+    border-color: rgba(116, 43, 69, 0);
+    font-size: 2vw;
+    color: #742B45;
+    padding: 0.5vw;
+
+    &:hover {
+        background: rgba(120, 43, 69, 0.15);
+        border-color:rgb(116, 43, 69);
+        border: solid;
+        border-radius: 10px;
+    }
+}
+
+#logo {
+    width: 3vw;
+}
+
+hr {
+    width: 110%;
+    margin: 10px 10px 0px 10px;
+    height: 0.5px;
+    border: none;
+    background-color: rgb(116, 43, 69);
+}

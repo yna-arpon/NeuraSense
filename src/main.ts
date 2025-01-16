@@ -1,4 +1,4 @@
-import { app, ipcMain, BrowserWindow, shell} from "electron"
+import { app, ipcMain, BrowserWindow, shell, screen } from "electron"
 import path from "path";
 
 const isDev = process.env.NODE_ENV !== "production"
@@ -10,9 +10,13 @@ let lastPage: string
 app.on("ready", createWindows);
 
 function createWindows(): void {
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
     mainWindow = new BrowserWindow({
-        width: 900,
-        height: 900,
+        width: width,
+        height: height,
+        minWidth: 900,
+        minHeight: 600,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
@@ -30,7 +34,6 @@ function createWindows(): void {
     mainWindow.loadFile(path.join(__dirname, "./pages/home/home.html"));
     mainWindow.on("ready-to-show", () => mainWindow.show())
 }
-
 
 // Navigation
 ipcMain.on("goToPage", (event, page) => {
