@@ -26,7 +26,7 @@ export class NavBar {
         } else {
             console.warn("[NavBar Renderer] Logo element (#logo) not found in navbar.html");
         }
-        
+
         this.element = navBarElement as HTMLElement;
         
     }
@@ -46,19 +46,19 @@ export class NavBar {
         
                 let page
                 switch(btn.id) {
-                    case "homePageBtn":
+                    case "homePageNavBtn":
                         page = "home";
                         break
-                    case "recordingPageBtn":
+                    case "recordingPageNavBtn":
                         page = "recording";
                         break
-                    case "historyPageBtn":
+                    case "historyPageNavBtn":
                         page = "history";
                         break
-                    case "settingsPageBtn":
+                    case "settingsPageNavBtn":
                         page = "settings";
                         break
-                    case "helpPageBtn":
+                    case "helpPageNavBtn":
                         page = "help";
                         break
                     default:

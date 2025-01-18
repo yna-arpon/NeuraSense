@@ -6,6 +6,7 @@
     <link href="../../../assets/css/font.css" type="text/css" rel="stylesheet"/>
     <link href="../../../assets/css/general.css" type="text/css" rel="stylesheet"/>
     <link href="../../../assets/css/navbar.css" type="text/css" rel="stylesheet"/>
+    <link href="../../../assets/css/home.css" type="text/css" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <title>Home</title>
 </head>
@@ -14,11 +15,44 @@
         <div id="navBarDiv"></div>
         <div id="pageContents">
             <h1>NeuraSense</h1>
-            <div>
-                <button class="pageBtn" id="recordingPageBtn">Start Recording</button>
-                <button class="pageBtn" id="historyPageBtn">History</button>
-                <button class="pageBtn" id="settingsPageBtn">Settings</button>
-                <button class="pageBtn" id="helpPageBtn">Help</button>
+            <div id="homePageBtns">
+                <div id="recordingBtnDiv">
+                    <button class="pageBtn" id="recordingPageBtn">
+                        <div class="btnDiv">
+                            <p class="btnText">Start Recording</p>
+                            <div class="iconFrame">
+                                <i class="bi bi-activity homePageIcons" id="recordingIconHomePage"></i>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div id="subBtnsDiv">
+                    <button class="pageBtn subBtns" id="historyPageBtn">
+                        <div class="btnDiv subBtnDiv">
+                            <p class="btnText">History</p>
+                            <div class="iconFrame subIconFrame">
+                                <i class="bi bi-clock-history homePageIcons subIcons" id="historyIconHomePage"></i>
+                            </div>
+                        </div>
+                    </button>
+                    <button class="pageBtn subBtns" id="settingsPageBtn">
+                        <div class="btnDiv subBtnDiv">
+                            <p class="btnText">Settings</p>
+                            <div class="iconFrame subIconFrame">
+                                <i class="bi bi-gear homePageIcons subIcons" id="settingsIconHomePage"></i>
+                            </div>
+                        </div>
+                    </button>
+                    <button class="pageBtn subBtns" id="helpPageBtn">
+                        <div class="btnDiv subBtnDiv">
+                            <p class="btnText">Help</p>
+                            <div class="iconFrame subIconFrame">
+                                <i class="bi bi-question-circle homePageIcons subIcons" id="helpIconHomePage"></i>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                
             </div>
         </div>
     </div>

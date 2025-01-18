@@ -5,6 +5,16 @@ body {
     margin: 0;
 }
 
+button {
+    font-family: 'Poppins';
+    cursor: pointer;
+}
+
+h1 {
+    color: #C4396B;
+    font-size: 2vw;
+}
+
 .contents {
     display: flex;
     flex-direction: row;
@@ -20,8 +30,10 @@ body {
     background: rgba(255, 191, 205,0.45);
     background-image: linear-gradient(to bottom, rgba(255, 191, 205,0.1), rgba(255, 191, 205,0.45));
     border-radius: 0px 15px 15px 0px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 #pageContents {
-    width: 92%;
+    width: 100%;
+    margin: 2%;
 }

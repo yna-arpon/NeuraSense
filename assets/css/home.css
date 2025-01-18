@@ -1,0 +1,116 @@
+#homePageBtns {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+#recordingPageBtn {
+    width: 100%;
+    height: 20vh;
+    background: rgb(255, 133, 159);
+    border: none;
+    border-radius: 15px;
+    &:hover {
+        background: rgb(239, 124, 149);
+    }
+}
+
+
+.pageBtn {
+    color: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px, rgba(0, 0, 0, 0.1) 0px 6px 6px;
+}
+
+
+#subBtnsDiv {
+    display: flex;
+    gap: 2vw;
+}
+
+.subBtns {
+    width: 33%;
+    height: 40vh;
+    border: none;
+    border-radius: 15px;
+}
+
+#historyPageBtn {
+    background: #E55D7D;
+    &:hover {
+        background: #d65674;;
+    }
+}
+
+#settingsPageBtn {
+    background: #C4396B;
+    &:hover {
+        background: #b53564;
+    }
+}
+
+#helpPageBtn {
+    background: #742B45;
+    &:hover {
+        background: #66263c;
+    }
+}
+
+.btnDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    margin: 0vw 1.5vw;
+}
+
+.btnText {
+    font-size: 2vw;
+    margin: 0;
+}
+
+.iconFrame {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    width: 9vw;
+    height: 9vw;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.homePageIcons {
+    font-size: 5vw;
+}
+
+#recordingIconHomePage {
+    color: rgb(255, 133, 159);;
+}
+
+.subBtnDiv {
+    margin: 1.5vw 1.2vw;
+    height: 21vw;
+}
+
+.subIconFrame {
+    align-self: flex-start;
+    width: 8vw;
+    height: 8vw;
+
+}
+
+.subIcons {
+    font-size: 4.75vw;
+}
+
+#historyIconHomePage {
+    color: #E55D7D;
+}
+
+#settingsIconHomePage {
+    color: #C4396B;
+}
+
+#helpIconHomePage {
+    color: #742B45;;
+}
