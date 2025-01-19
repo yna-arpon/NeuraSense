@@ -1,5 +1,6 @@
-import { app, ipcMain, BrowserWindow, shell, screen } from "electron"
+import { app, ipcMain, BrowserWindow, shell, screen, ipcRenderer } from "electron"
 import path from "path";
+import { eventNames } from "process";
 
 const isDev = process.env.NODE_ENV !== "production"
 let mainWindow : BrowserWindow;
@@ -31,45 +32,54 @@ function createWindows(): void {
 
     console.log(__dirname)
 
-    mainWindow.loadFile(path.join(__dirname, "./pages/home/home.html"));
+    mainWindow.loadFile(path.join(__dirname, "./index.html"));
     mainWindow.on("ready-to-show", () => mainWindow.show())
 }
 
 // Navigation
-ipcMain.on("goToPage", (event, page) => {
-    console.log(`Navigating to ${page} page`)
+// ipcMain.on("goToPage", (event, page) => {
+//     console.log(`Navigating to ${page} page`)
 
-    if (mainWindow) {
-        if (currentPage !== page) {
-            lastPage = currentPage
-            currentPage = page
+//     if (mainWindow) {
+//         if (currentPage !== page) {
+//             lastPage = currentPage
+//             currentPage = page
 
-            let pageFile
-            switch (page) {
-                case "home":
-                    pageFile = path.join(__dirname, "./pages/home/home.html");
-                    break 
-                case "recording":
-                    pageFile = path.join(__dirname, "./pages/recording/recording.html");
-                    break
-                case "history":
-                    pageFile = path.join(__dirname, "./pages/history/history.html");
-                    break
-                case "settings":
-                    pageFile = path.join(__dirname, "./pages/settings/settings.html");
-                    break
-                case "help":
-                    let externalURL = "http://google.com" // To be changed with NeuraSense landing page
-                    shell.openExternal(externalURL)
-                    break
-                default:
-                    console.log(`[Main Process] Unknown Page ${page}`)
-            }
+//             let pageFile
+//             switch (page) {
+//                 case "home":
+//                     pageFile = path.join(__dirname, "./pages/home/home.html");
+//                     break 
+//                 case "recording":
+//                     pageFile = path.join(__dirname, "./pages/recording/recording.html");
+//                     break
+//                 case "history":
+//                     pageFile = path.join(__dirname, "./pages/history/history.html");
+//                     break
+//                 case "settings":
+//                     pageFile = path.join(__dirname, "./pages/settings/settings.html");
+//                     break
+//                 case "help":
+//                     let externalURL = "http://google.com" // To be changed with NeuraSense landing page
+//                     shell.openExternal(externalURL)
+//                     break
+//                 default:
+//                     console.log(`[Main Process] Unknown Page ${page}`)
+//             }
 
-            if (pageFile) {
-                mainWindow.loadFile(pageFile)
-            }   
+//             if (pageFile) {
+//                 mainWindow.loadFile(pageFile)
+//             }   
             
-        }
-    }
+//         }
+//     }
+// })
+
+ipcMain.on("navigate", (event, page) => {
+    event.sender.send("navigate", page)
+})
+
+ipcMain.on("launchHelp", () => {
+    let externalURL = "http://google.com" // To be changed with NeuraSense landing page
+    shell.openExternal(externalURL)
 })

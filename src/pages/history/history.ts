@@ -1,7 +1,13 @@
-import { NavBar } from "../../components/navbar";
+import { BasePage } from "../../controllers/basePage";
 
-const navBarContainer = document.getElementById("navBarDiv")
+export class HistoryPage extends BasePage {
+    constructor() {
+        super("recording");
+    }
 
-// Append navigation bar
-const navBar = new NavBar()
-navBarContainer && navBar.appendTo(navBarContainer)
+    initialize(): void {
+        super.initialize();
+        console.log("[HistoryPage] Setting up recording page functionality.");
+        // Setup recording page logic here
+    }
+}

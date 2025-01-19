@@ -1,37 +1,44 @@
 import { ipcRenderer } from "electron";
-import { NavBar } from "../../components/navbar";
+import { BasePage } from "../../controllers/basePage";
 
-const homeNavBtns = document.querySelectorAll<HTMLButtonElement>(".pageBtn");
-const navBarContainer = document.getElementById("navBarDiv")
+export class HomePage extends BasePage {
+    constructor() {
+        super("home")
+    }
 
-// Append navigation bar
-const navBar = new NavBar()
-navBarContainer && navBar.appendTo(navBarContainer)
+    initialize(): void {
+        super.initialize();
 
-// Home page navigation
-homeNavBtns.forEach((btn) => {
-    btn.addEventListener(("click"), () => {
-        console.log(`[Home Renderer] "${btn.id}" was clicked`)
+        // Select all buttons with the class 'pageBtn'
+        const homeNavBtns = document.querySelectorAll<HTMLButtonElement>(".pageBtn");
 
-        let page
-        switch(btn.id) {
-            case "recordingPageBtn":
-                page = "recording";
-                break
-            case "historyPageBtn":
-                page = "history";
-                break
-            case "settingsPageBtn":
-                page = "settings";
-                break
-            case "helpPageBtn":
-                page = "help";
-                break
-            default:
-                console.log("Unknown button clicked");
-                break
-        }
+        // Home page navigation
+        homeNavBtns.forEach((btn) => {
+            btn.addEventListener(("click"), () => {
+                console.log(`[Home Renderer] "${btn.id}" was clicked`)
 
-        ipcRenderer.send("goToPage", page)
-    })
-})
+                let page
+                switch(btn.id) {
+                    case "recordingPageBtn":
+                        page = "recording";
+                        break
+                    case "historyPageBtn":
+                        page = "history";
+                        break
+                    case "settingsPageBtn":
+                        page = "settings";
+                        break
+                    case "helpPageBtn":
+                        page = "help";
+                        break
+                    default:
+                        console.log("Unknown button clicked");
+                        break
+                }
+
+                ipcRenderer.send("navigate", page)
+            })
+        })
+
+    }
+}

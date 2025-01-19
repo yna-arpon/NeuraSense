@@ -34,40 +34,40 @@ export class NavBar {
     // Method to append nav bar to a container
     appendTo(container: HTMLElement) {
         container.appendChild(this.element)
-        this.setUpNavigation()
+        // this.setUpNavigation()
     }
 
-    // Navigation functionality
-    private setUpNavigation() {
-        const navBtns = document.querySelectorAll<HTMLButtonElement>(".navBtn");
-        navBtns.forEach((btn) => {
-            btn.addEventListener(("click"), () => {
-                console.log(`[Nav Bar Renderer] "${btn.id}" was clicked`)
+    // // Navigation functionality
+    // private setUpNavigation() {
+    //     const navBtns = document.querySelectorAll<HTMLButtonElement>(".navBtn");
+    //     navBtns.forEach((btn) => {
+    //         btn.addEventListener(("click"), () => {
+    //             console.log(`[Nav Bar Renderer] "${btn.id}" was clicked`)
         
-                let page
-                switch(btn.id) {
-                    case "homePageNavBtn":
-                        page = "home";
-                        break
-                    case "recordingPageNavBtn":
-                        page = "recording";
-                        break
-                    case "historyPageNavBtn":
-                        page = "history";
-                        break
-                    case "settingsPageNavBtn":
-                        page = "settings";
-                        break
-                    case "helpPageNavBtn":
-                        page = "help";
-                        break
-                    default:
-                        console.log("Unknown button clicked");
-                        break
-                }
+    //             let page
+    //             switch(btn.id) {
+    //                 case "homePageNavBtn":
+    //                     page = "home";
+    //                     break
+    //                 case "recordingPageNavBtn":
+    //                     page = "recording";
+    //                     break
+    //                 case "historyPageNavBtn":
+    //                     page = "history";
+    //                     break
+    //                 case "settingsPageNavBtn":
+    //                     page = "settings";
+    //                     break
+    //                 case "helpPageNavBtn":
+    //                     page = "help";
+    //                     break
+    //                 default:
+    //                     console.log("Unknown button clicked");
+    //                     break
+    //             }
         
-                ipcRenderer.send("goToPage", page)
-            })
-        })
-    }
+    //             ipcRenderer.send("goToPage", page)
+    //         })
+    //     })
+    // }
 }
