@@ -26,6 +26,7 @@ function loadPage(page: string) {
                 // Populate pageContentsDiv with HTML page template
                 pageContentsDiv.innerHTML = html;
 
+                // Initialize page functionality
                 pageManager.setupPage(page)
             }
         })
