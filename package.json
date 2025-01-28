@@ -11,11 +11,15 @@
   "author": "Yna Arpon",
   "license": "ISC",
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
     "@types/electron": "^1.4.38",
     "@types/node": "^22.9.0",
     "copyfiles": "^2.4.1",
     "electron": "^33.2.0",
     "rimraf": "^6.0.1",
     "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1"
   }
 }
