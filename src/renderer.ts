@@ -16,21 +16,27 @@ if (navBarContainer) {
 
 // Function to load a page
 function loadPage(page: string) {
-    const filePath = `./pages/${page}/${page}.html`
+    if (page == "help") {
+        ipcRenderer.send("launchHelp")
+    } else {
+        const filePath = `./pages/${page}/${page}.html`
 
-    // Load the HTML content for the page
-    fetch(filePath)
-        .then(response => response.text())
-        .then(html => {
-            if (pageContentsDiv) {
-                // Populate pageContentsDiv with HTML page template
-                pageContentsDiv.innerHTML = html;
+        // Load the HTML content for the page
+        fetch(filePath)
+            .then(response => response.text())
+            .then(html => {
+                if (pageContentsDiv) {
+                    // Populate pageContentsDiv with HTML page template
+                    pageContentsDiv.innerHTML = html;
 
-                // Initialize page functionality
-                pageManager.setupPage(page)
-            }
-        })
-        .catch(err => console.error(`Error loading page "${page}":`, err));
+                    // Initialize page functionality
+                    pageManager.setupPage(page)
+                }
+            })
+            .catch(err => console.error(`Error loading page "${page}":`, err));
+    }
+
+    
 }
 
 // Nav bar navigation functionality

@@ -1,7 +1,7 @@
 #homePageBtns {
     display: flex;
     flex-direction: column;
-    gap: 2vh;
+    gap: 4vh;
 }
 
 #recordingPageBtn {
