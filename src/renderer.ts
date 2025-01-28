@@ -64,3 +64,51 @@ ipcRenderer.on("navigate", (event, page) => {
     console.log(`[RENDERER] Navigating to ${page}`)
     loadPage(page)
 })
+
+// Render history page
+ipcRenderer.on("showHistoryTable", (event, data) => {
+    // Get table
+    const tableBody = document.querySelector<HTMLTableSectionElement>('#historyTableBody');
+
+    if(!tableBody) {
+        console.error('[RENDENER]: Table body element not found')
+        return;
+    }
+
+    // Clear rows
+    tableBody.innerHTML = ""
+
+    // Empty dataset
+    if (data.length === 0) {
+        // Add a row to indicate no data
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.colSpan = 7; // Spanning all columns
+        cell.textContent = "No history records found.";
+        cell.style.textAlign = "center";
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+        return;
+    }
+
+    data.forEach((recording: string[]) => {
+        const row = document.createElement("tr");
+        
+        let rowNum: number = 0;
+        let totRows: number = 6
+        
+        while (rowNum <= totRows) {
+            row.appendChild(createCell(recording[rowNum]))
+            rowNum++
+        }
+
+        // Append row to table body
+        tableBody.appendChild(row)
+    })
+})
+
+function createCell(content: string): HTMLTableCellElement {
+    const cell = document.createElement("td");
+    cell.textContent = content;
+    return cell;
+}

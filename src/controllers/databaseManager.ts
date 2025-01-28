@@ -89,5 +89,20 @@ export class DatabaseManager {
             fNIRSFile: row.fNIRSFile ? Buffer.from(row.fNIRSFile).toString('base64') : null, // Convert BLOB to Base64
         }));
     }
-    
+
+    clearDatabase(): void {
+        try {
+          // Clear data from tables
+          db.prepare('DELETE FROM Recording').run();
+          db.prepare('DELETE FROM Patient').run();
+
+          // Reset autoincrement values
+          db.prepare('DELETE FROM sqlite_sequence WHERE name = ?').run('Recording');
+          db.prepare('DELETE FROM sqlite_sequence WHERE name = ?').run('Patient');
+
+          console.log('Database cleared successfully.');
+      } catch (error) {
+          console.error('Failed to clear database:', error);
+      }
+    }
 }
