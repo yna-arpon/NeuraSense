@@ -9,3 +9,6 @@ dist/
 
 # Ignore build artifacts
 *.tsbuildinfo
+
+# Ignore ecmo db
+ecmo.db
