@@ -28,7 +28,7 @@ export class DatabaseManager {
             );
           `);
     }
-    
+
     // Generate sample data for testing 
     insertSampleData() {
         const insertPatient = db.prepare(`
@@ -41,12 +41,12 @@ export class DatabaseManager {
         `);
       
         // Add Patients
-        insertPatient.run(1, 'John Doe', '2015-06-15');
-        insertPatient.run(2, 'Jane Smith', '2012-11-25');
+        insertPatient.run(1234, 'John Doe', '2015-06-15');
+        insertPatient.run(5678, 'Jane Smith', '2012-11-25');
       
         // Add Recordings
-        insertRecording.run(1, '2023-01-01 10:00:00', '2023-01-01 12:00:00');
-        insertRecording.run(2, '2023-02-15 14:30:00', '2023-02-15 16:30:00');
+        insertRecording.run(1234, '2023-01-01 10:00:00', '2023-01-15 12:00:00');
+        insertRecording.run(5678, '2023-01-16 14:30:00', '2023-02-27 16:30:00');
       
         console.log('Sample data inserted.');
     }

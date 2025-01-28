@@ -15,6 +15,27 @@ h1 {
     font-size: 2vw;
 }
 
+table {
+    border-collapse: collapse;
+}
+
+td {
+    font-weight: normal;
+    vertical-align: middle;
+    padding: 1vw 0 0.5vw 0;
+}
+
+th {
+    text-align: left;
+    font-size: 1.3vw;
+    font-weight: normal;
+}
+
+thead th {
+    padding-bottom: 1vh;
+    border-bottom: 1px solid #742B45;;
+}
+
 .contents {
     display: flex;
     flex-direction: row;

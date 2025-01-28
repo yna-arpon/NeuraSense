@@ -39,7 +39,7 @@ export class HistoryPage extends BasePage {
             // Add a row to indicate no data
             const row = document.createElement("tr");
             const cell = document.createElement("td");
-            cell.colSpan = 7; // Spanning all columns
+            cell.colSpan = 6; // Spanning all columns
             cell.textContent = "No history records found.";
             cell.style.textAlign = "center";
             row.appendChild(cell);
@@ -52,11 +52,10 @@ export class HistoryPage extends BasePage {
             const row = document.createElement("tr");
 
             // Populate row with data
-            row.appendChild(this.createCell(record.healthNumber.toString()));
             row.appendChild(this.createCell(record.patientName));
+            row.appendChild(this.createCell(record.healthNumber.toString()));
             row.appendChild(this.createCell(record.birthdate.toLocaleDateString()));
-            row.appendChild(this.createCell(record.ecmoStart.toLocaleDateString()));
-            row.appendChild(this.createCell(record.ecmoEnd.toLocaleDateString()));
+            row.appendChild(this.createCell(`${record.ecmoStart.toLocaleDateString()} - ${record.ecmoEnd.toLocaleDateString()}`));
             row.appendChild(this.createCell(record.eegFile ? `[File: ${record.eegFile.length} bytes]` : "-"));
             row.appendChild(this.createCell(record.fNIRSFile ? `[File: ${record.fNIRSFile.length} bytes]` : "-"));
 
