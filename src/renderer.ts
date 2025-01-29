@@ -34,9 +34,7 @@ function loadPage(page: string) {
                 }
             })
             .catch(err => console.error(`Error loading page "${page}":`, err));
-    }
-
-    
+    }    
 }
 
 // Nav bar navigation functionality

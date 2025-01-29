@@ -86,6 +86,7 @@ app.on('window-all-closed', () => {
 
     // Clear db if dev mode
     if(isDev) {
+        console.log("clear db")
         databaseManager.clearDatabase()
     }
 })

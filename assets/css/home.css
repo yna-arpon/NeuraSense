@@ -1,3 +1,7 @@
+#homeContents {
+    width: 100%;
+}
+
 #homePageBtns {
     display: flex;
     flex-direction: column;
