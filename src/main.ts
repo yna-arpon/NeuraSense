@@ -80,13 +80,13 @@ ipcMain.on("prepareDatabse", (event) => {
 
 // When user closes the appliction
 app.on('window-all-closed', () => {
-    if (!isMac) {
-        app.quit()
-    }
-
     // Clear db if dev mode
     if(isDev) {
         console.log("clear db")
         databaseManager.clearDatabase()
     }
+
+    if (!isMac) {
+        app.quit()
+    }    
 })

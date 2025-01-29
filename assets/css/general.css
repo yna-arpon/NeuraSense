@@ -44,7 +44,11 @@ thead th {
 }
 
 #navBarDiv {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 5%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,9 +56,23 @@ thead th {
     background-image: linear-gradient(to bottom, rgba(255, 191, 205,0.1), rgba(255, 191, 205,0.45));
     border-radius: 0px 15px 15px 0px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    transition: width 0.3s ease-in-out;
 }
 
 #pageContents {
     width: 100%;
+    padding-left: 5%;
     margin: 0vw 5vw 0vw 3vw;
+    transition: width 0.3s ease-in-out
+}
+
+/* When the screen width is 1100px or smaller */
+@media (max-width: 1100px) {
+    #navBarDiv {
+        width: 8%; /* Shrink navbar width */
+    }
+
+    #pageContents {
+        padding-left: 8%;
+    }
 }

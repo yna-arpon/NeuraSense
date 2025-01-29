@@ -15,6 +15,7 @@
     font-size: 2vw;
     color: #742B45;
     padding: 0.5vw;
+    transition: width 0.3s ease-in-out;
 
     &:hover {
         background: rgba(120, 43, 69, 0.15);
@@ -26,6 +27,7 @@
 
 #logo {
     width: 3vw;
+    transition: width 0.3s ease-in-out;
 }
 
 hr {
@@ -34,4 +36,15 @@ hr {
     height: 0.5px;
     border: none;
     background-color: rgb(116, 43, 69);
+}
+
+/* When the screen width is 1100px or smaller */
+@media (max-width: 1100px) {
+    .navBtn {
+        font-size: 3vw; /* Shrink navbar width */
+    }
+
+    #log {
+        width: 5vw;
+    }
 }
