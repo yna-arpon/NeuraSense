@@ -7,3 +7,15 @@
 #historyTable tr:first-child {
     padding-top: 1vh;
 }
+
+.smallCol {
+    width: 10%;
+}
+
+.deleteBtn {
+    background: none;
+    border: solid;
+    border-color: rgba(116, 43, 69, 0);
+    font-size: 2vw;
+    color: #742B45;
+}

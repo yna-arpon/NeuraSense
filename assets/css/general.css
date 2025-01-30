@@ -16,24 +16,31 @@ h1 {
 }
 
 table {
+    table-layout: fixed;
     border-collapse: collapse;
 }
 
 td {
     font-weight: normal;
     vertical-align: middle;
-    padding: 1vw 0 0.5vw 0;
+    padding: 0.5vh 0px;
 }
 
 th {
     text-align: left;
     font-size: 1.3vw;
+    width: 18%;
     font-weight: normal;
 }
 
 thead th {
     padding-bottom: 1vh;
-    border-bottom: 1px solid #742B45;;
+    border-bottom: 1px solid #742B45;
+}
+
+tbody {
+    font-size: 1.2vw;
+    row-gap: 2%;
 }
 
 .contents {

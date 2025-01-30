@@ -147,7 +147,7 @@ function attachDeleteListeners(): void {
 function emptyDatabase(tableBody: HTMLTableSectionElement) {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
-    cell.colSpan = 6; // Spanning all columns
+    cell.colSpan = 7; // Spanning all columns
     cell.textContent = "No history records found.";
     cell.style.textAlign = "center";
     row.appendChild(cell);

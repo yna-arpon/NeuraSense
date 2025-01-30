@@ -119,8 +119,6 @@ export class DatabaseManager {
           // Reset autoincrement values
           db.prepare('DELETE FROM sqlite_sequence WHERE name = ?').run('Recording');
           db.prepare('DELETE FROM sqlite_sequence WHERE name = ?').run('Patient');
-
-          console.log('Database cleared successfully.');
       } catch (error) {
           console.error('Failed to clear database:', error);
       }
