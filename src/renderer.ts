@@ -46,7 +46,6 @@ function setupNavigation() {
         btn.addEventListener(("click"), () => {
             const page = btn.getAttribute("data-page")
             if (page) {
-                console.log(`[RENDERER] "${page}" was clicked`)
                 if (page == "help") {
                     ipcRenderer.send("launchHelp")
                 } else {
@@ -65,7 +64,6 @@ loadPage("home")
 
 // Page navigation functionality
 ipcRenderer.on("navigate", (event, page) => {
-    console.log(`[RENDERER] Navigating to ${page}`)
     loadPage(page)
 })
 
@@ -103,27 +101,6 @@ ipcRenderer.on("showHistoryTable", (event, data) => {
 
     attachDeleteListeners()
 });
-
-// ipcRenderer.on("deleteRow", (event, recordID: number) => {
-//    console.log(`Deleting row for ${recordID}`);
-
-//    const deleteBtn = document.querySelector(`button[recordid="${recordID}"]`);
-//    const row = deleteBtn?.closest("tr");
-
-//    if (row) {
-//         row.remove();
-//         ipcRenderer.send("rowDeleted");
-//    } else {
-//         console.error("[RENDERER]: Row not found")
-//    }
-// });
-
-// ipcRenderer.on("showEmptyTable", (event) => {
-//     const tableBody = document.querySelector<HTMLTableSectionElement>('#historyTableBody');
-//     if(tableBody) {
-//         emptyDatabase(tableBody);
-//     }
-// })
 
 function populateHistoryTableRows(recording: string[]): HTMLTableRowElement {
     const row = document.createElement("tr");

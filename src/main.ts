@@ -99,7 +99,6 @@ async function deleteRecordFromDB(event: IpcMainEvent, recordID: number) {
        await databaseManager.deleteRecord(recordID);
 
        const remainingData = await databaseManager.getData();
-       console.log("[MAIN PROCESS]: Data after deletion:", remainingData.length);
     } catch (error) {
         throw new Error("Failed to delete record from database")
     }
@@ -109,7 +108,6 @@ async function deleteRecordFromDB(event: IpcMainEvent, recordID: number) {
 app.on('window-all-closed', () => {
     // Clear db if dev mode
     if(isDev) {
-        console.log("clear db")
         databaseManager.clearDatabase()
     }
 
