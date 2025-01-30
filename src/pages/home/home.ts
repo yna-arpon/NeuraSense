@@ -15,8 +15,6 @@ export class HomePage extends BasePage {
         // Home page navigation
         homeNavBtns.forEach((btn) => {
             btn.addEventListener(("click"), () => {
-                console.log(`[Home Renderer] "${btn.id}" was clicked`)
-
                 let page
                 switch(btn.id) {
                     case "recordingPageBtn":
@@ -32,7 +30,7 @@ export class HomePage extends BasePage {
                         page = "help";
                         break
                     default:
-                        console.log("Unknown button clicked");
+                        console.error("[HOME RENDENER]: Unknown button clicked");
                         break
                 }
 

@@ -38,8 +38,6 @@ function createWindows(): void {
         databaseManager.insertSampleData()
     }
 
-    console.log(__dirname)
-
     mainWindow.loadFile(path.join(__dirname, "./index.html"));
     mainWindow.on("ready-to-show", () => mainWindow.show())
 }
@@ -87,10 +85,9 @@ function formatData(data: any[]) {
 ipcMain.on("deleteRecord",(event, recordID) => {
     deleteRecordFromDB(event, recordID)
         .then(async () => {
-            console.log(await databaseManager.getData())
             console.log(`[MAIN PROCESS]: Successfully deleted record ID ${recordID}`);
             const data = formatData(await databaseManager.getData())
-            event.sender.send("showHistoryTable", data); // Notify renderer
+            event.sender.send("showHistoryTable", data); // Rerender history table
         })
         .catch((error) => {
             console.error(`[MAIN PROCESS]: Failed to delete record ID ${recordID}`)
@@ -108,15 +105,15 @@ async function deleteRecordFromDB(event: IpcMainEvent, recordID: number) {
     }
 }
 
-// // When user closes the appliction
-// app.on('window-all-closed', () => {
-//     // Clear db if dev mode
-//     if(isDev) {
-//         // console.log("clear db")
-//         // databaseManager.clearDatabase()
-//     }
+// When user closes the appliction
+app.on('window-all-closed', () => {
+    // Clear db if dev mode
+    if(isDev) {
+        console.log("clear db")
+        databaseManager.clearDatabase()
+    }
 
-//     // if (!isMac) {
-//     //     app.quit()
-//     // }    
-// })
+    if (!isMac) {
+        app.quit()
+    }    
+})
