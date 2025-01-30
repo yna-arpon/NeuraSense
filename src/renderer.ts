@@ -84,32 +84,99 @@ ipcRenderer.on("showHistoryTable", (event, data) => {
 
     // Empty dataset
     if (data.length === 0) {
-        // Add a row to indicate no data
-        const row = document.createElement("tr");
-        const cell = document.createElement("td");
-        cell.colSpan = 7; // Spanning all columns
-        cell.textContent = "No history records found.";
-        cell.style.textAlign = "center";
-        row.appendChild(cell);
-        tableBody.appendChild(row);
+        emptyDatabase(tableBody)
         return;
     }
 
     data.forEach((recording: string[]) => {
-        const row = document.createElement("tr");
+        // Populate row with data 
+        const row: HTMLTableRowElement = populateHistoryTableRows(recording);
+
+        // Create delete button 
+        const deleteCell = createDeleteCell(recording);
         
-        let rowNum: number = 0;
-        let totRows: number = 6
-        
-        while (rowNum <= totRows) {
-            row.appendChild(createCell(recording[rowNum]))
-            rowNum++
-        }
+        row.appendChild(deleteCell)
 
         // Append row to table body
         tableBody.appendChild(row)
     })
-})
+
+    attachDeleteListeners()
+});
+
+// ipcRenderer.on("deleteRow", (event, recordID: number) => {
+//    console.log(`Deleting row for ${recordID}`);
+
+//    const deleteBtn = document.querySelector(`button[recordid="${recordID}"]`);
+//    const row = deleteBtn?.closest("tr");
+
+//    if (row) {
+//         row.remove();
+//         ipcRenderer.send("rowDeleted");
+//    } else {
+//         console.error("[RENDERER]: Row not found")
+//    }
+// });
+
+// ipcRenderer.on("showEmptyTable", (event) => {
+//     const tableBody = document.querySelector<HTMLTableSectionElement>('#historyTableBody');
+//     if(tableBody) {
+//         emptyDatabase(tableBody);
+//     }
+// })
+
+function populateHistoryTableRows(recording: string[]): HTMLTableRowElement {
+    const row = document.createElement("tr");
+        
+    // Populate row with data
+    let colNum: number = 1;
+    let totCols: number = 6;
+    
+    while (colNum <= totCols) {
+        row.appendChild(createCell(recording[colNum]));
+        colNum++;
+    }
+
+    return row;
+}
+
+function createDeleteCell(recording: string[]): HTMLTableCellElement {
+    const deleteCell = document.createElement("td");
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("deleteBtn");
+    deleteButton.innerHTML = `<i class="bi bi-trash"></i>`; // Bootstrap trash icon
+    deleteButton.setAttribute("recordID", recording[0]); 
+    deleteCell.appendChild(deleteButton);
+    return deleteCell
+}
+
+function attachDeleteListeners(): void {
+    const deleteBtns = document.querySelectorAll(".deleteBtn");
+    
+    deleteBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const recordID = Number(btn.getAttribute("recordID"));
+            console.log(`[RENDERER] Clicking delete for ${recordID}, ${typeof(recordID)}`);
+
+            if (recordID) {
+                ipcRenderer.send("deleteRecord", recordID);
+            } else {
+                console.error("[HISTORY RENDERER]: Record ID not found");
+            }
+        })
+    })
+}
+
+function emptyDatabase(tableBody: HTMLTableSectionElement) {
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.colSpan = 6; // Spanning all columns
+    cell.textContent = "No history records found.";
+    cell.style.textAlign = "center";
+    row.appendChild(cell);
+    tableBody.appendChild(row);
+    return;
+}
 
 function createCell(content: string): HTMLTableCellElement {
     const cell = document.createElement("td");

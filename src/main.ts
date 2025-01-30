@@ -1,4 +1,4 @@
-import { app, ipcMain, BrowserWindow, shell, screen, ipcRenderer } from "electron"
+import { app, ipcMain, BrowserWindow, shell, screen, ipcRenderer, IpcMainEvent } from "electron"
 import path from "path";
 import { DatabaseManager } from "./controllers/databaseManager";
 import { eventNames } from "process";
@@ -34,7 +34,7 @@ function createWindows(): void {
         // Open dev tools if in dev env 
         mainWindow.webContents.openDevTools();
         
-        // Open dev tools if in dev env 
+        // Insert sample data if dev env
         databaseManager.insertSampleData()
     }
 
@@ -54,14 +54,22 @@ ipcMain.on("launchHelp", () => {
 })
 
 // Listen for request to display history page
-ipcMain.on("prepareDatabse", (event) => {
+ipcMain.on("prepareTable", async (event) => {
     // Prepare data
-    const data = databaseManager.getData();
+    const data = await databaseManager.getData();
 
-    let preparedData: String[][] = [];
+    const preparedData = formatData(data)
+    
+    event.sender.send("showHistoryTable", preparedData);
+    event.reply("historyPageReady");
+});
+
+function formatData(data: any[]) {
+    let formattedData: String[][] = [];
 
     data.forEach(record => {
         let arr: String[] = [
+            record.recordID.toString(),
             record.patientName, 
             record.healthNumber.toString(), 
             record.birthdate.toDateString(),
@@ -70,23 +78,45 @@ ipcMain.on("prepareDatabse", (event) => {
             record.eegFile ? `[File: ${record.eegFile.length} bytes]` : "-",
             record.fNIRSFile ? `[File: ${record.fNIRSFile.length} bytes]` : "-"
         ]
-
-        preparedData.push(arr)
+        formattedData.push(arr)
     })
-    
-    event.sender.send("showHistoryTable", preparedData)
+
+    return formattedData
+}
+
+ipcMain.on("deleteRecord",(event, recordID) => {
+    deleteRecordFromDB(event, recordID)
+        .then(async () => {
+            console.log(await databaseManager.getData())
+            console.log(`[MAIN PROCESS]: Successfully deleted record ID ${recordID}`);
+            const data = formatData(await databaseManager.getData())
+            event.sender.send("showHistoryTable", data); // Notify renderer
+        })
+        .catch((error) => {
+            console.error(`[MAIN PROCESS]: Failed to delete record ID ${recordID}`)
+        })
 })
 
+async function deleteRecordFromDB(event: IpcMainEvent, recordID: number) {
+    try {
+       await databaseManager.deleteRecord(recordID);
 
-// When user closes the appliction
-app.on('window-all-closed', () => {
-    // Clear db if dev mode
-    if(isDev) {
-        console.log("clear db")
-        databaseManager.clearDatabase()
+       const remainingData = await databaseManager.getData();
+       console.log("[MAIN PROCESS]: Data after deletion:", remainingData.length);
+    } catch (error) {
+        throw new Error("Failed to delete record from database")
     }
+}
 
-    if (!isMac) {
-        app.quit()
-    }    
-})
+// // When user closes the appliction
+// app.on('window-all-closed', () => {
+//     // Clear db if dev mode
+//     if(isDev) {
+//         // console.log("clear db")
+//         // databaseManager.clearDatabase()
+//     }
+
+//     // if (!isMac) {
+//     //     app.quit()
+//     // }    
+// })
