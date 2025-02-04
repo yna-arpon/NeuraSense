@@ -6,22 +6,22 @@
             <div id="addPatientForm">
                 <h2>Add a New Patient</h2>
                 <form name="patientForm" id="patientFieldsContainer">
-                    <label for="fname">First name:</label><br>
-                    <input type="text" id="fname" name="fname"><br>
+                    <label for="fname">First name</label><br>
+                    <input type="text" id="fname" name="fname" required="required"><br>
     
-                    <label for="mname">Middle name:</label><br>
-                    <input type="text" id="mname" name="mname"><br>
+                    <label for="mname">Middle name</label><br>
+                    <input type="text" id="mname" name="mname" placeholder="Optional"><br>
     
-                    <label for="lname">Last name:</label><br>
-                    <input type="text" id="lname" name="lname"><br>
+                    <label for="lname">Last name</label><br>
+                    <input type="text" id="lname" name="lname" required="required"><br>
     
-                    <label for="healthNum">Health Number:</label><br>
-                    <input type="text" id="healthNum" name="healthNum" min="0"><br>
+                    <label for="healthNum">Health Number</label><br>
+                    <input type="text" id="healthNum" name="healthNum" required="required"><br>
     
                     <label for="birthdate">Birthdate</label><br>
-                    <input type="date" id="birthdate" name="birthdate"><br>
+                    <input type="date" id="birthdate" name="birthdate" required="required"><br>
                     
-                    <input id="startRecordingBtn" type="submit" value="Start Recording">
+                    <input id="startRecordingBtn" type="submit" value="Start Recording" disabled>
                 </form>
             </div>
         </div>
