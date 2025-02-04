@@ -15,13 +15,20 @@ h1 {
     font-size: 2vw;
 }
 
+h2 {
+    color: #C4396B;
+    font-size: 1.5rem;
+    margin-bottom: 3vh;
+    margin-top: 1vh;
+}
+
 table {
     table-layout: fixed;
     border-collapse: collapse;
 }
 
 td {
-    font-weight: normal;
+    font-weight: lighter;
     vertical-align: middle;
     padding: 0.5vh 0px;
 }

@@ -1,0 +1,51 @@
+#addPatientForm {
+    width: 41%;
+    height: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+#addPatientDiv {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#patientFieldsContainer {
+    width: 85%;
+}
+
+#startRecordingBtn {
+    margin-top: 2vw;
+    height: 5vh;
+    background: #FF7895;
+    color: white;
+    border: none;
+    font-size: 1.4vw;
+
+    &:hover {
+        background: #ef718c;
+        cursor: pointer;
+    }
+}
+
+input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 4vh;
+    border: solid 1px rgb(40, 40, 40);
+    border-radius: 7px;
+    margin-bottom: 23px;
+    font-size: 1rem;
+    padding: 2px 7px;
+    font-family: 'Poppins';
+}
+
+form {
+    font-size: 1.1rem;
+}

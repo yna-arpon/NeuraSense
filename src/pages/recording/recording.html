@@ -1,7 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <body>
-    <h1>The recording page!</h1>
+    <div class="contents">
+        <div id="addPatientDiv"> 
+            <div id="addPatientForm">
+                <h2>Add a New Patient</h2>
+                <form name="patientForm" id="patientFieldsContainer">
+                    <label for="fname">First name:</label><br>
+                    <input type="text" id="fname" name="fname"><br>
+    
+                    <label for="mname">Middle name:</label><br>
+                    <input type="text" id="mname" name="mname"><br>
+    
+                    <label for="lname">Last name:</label><br>
+                    <input type="text" id="lname" name="lname"><br>
+    
+                    <label for="healthNum">Health Number:</label><br>
+                    <input type="text" id="healthNum" name="healthNum" min="0"><br>
+    
+                    <label for="birthdate">Birthdate</label><br>
+                    <input type="date" id="birthdate" name="birthdate"><br>
+                    
+                    <input id="startRecordingBtn" type="submit" value="Start Recording">
+                </form>
+            </div>
+        </div>
+        
+    </div>
+
     <!-- This is a hack to work around commonJs support -->
     <script>
         var exports = {};
