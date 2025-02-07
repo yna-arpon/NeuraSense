@@ -46,7 +46,7 @@ input {
     height: 4vh;
     border: solid 1px rgb(40, 40, 40);
     border-radius: 7px;
-    margin-bottom: 23px;
+    /* margin-bottom: 23px; */
     font-size: 1rem;
     padding: 2px 7px;
     font-family: 'Poppins';
@@ -54,4 +54,15 @@ input {
 
 form {
     font-size: 1.1rem;
+}
+
+.invalid {
+    border: 1px solid rgb(255, 102, 135);
+    box-shadow: rgba(155, 102, 135, 0.2) 0px 8px 24px;
+}
+
+.invalidInptMsg {
+    height: 2rem;
+    font-size: 0.8rem;
+
 }

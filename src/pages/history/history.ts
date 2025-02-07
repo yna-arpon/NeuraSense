@@ -4,7 +4,7 @@ import { BasePage } from "../../controllers/basePage";
 export class HistoryPage extends BasePage {
 
     constructor() {
-        super("recording");
+        super("history");
     }
 
     initialize(): void {

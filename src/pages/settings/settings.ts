@@ -2,7 +2,7 @@ import { BasePage } from "../../controllers/basePage";
 
 export class SettingsPage extends BasePage {
     constructor() {
-        super("recording");
+        super("settings");
     }
 
     initialize(): void {

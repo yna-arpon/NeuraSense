@@ -133,7 +133,6 @@ function attachDeleteListeners(): void {
     deleteBtns.forEach((btn) => {
         btn.addEventListener('click', () => {
             const recordID = Number(btn.getAttribute("recordID"));
-            console.log(`[RENDERER] Clicking delete for ${recordID}, ${typeof(recordID)}`);
 
             if (recordID) {
                 ipcRenderer.send("deleteRecord", recordID);
