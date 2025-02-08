@@ -30,24 +30,18 @@ export class RecordingPage extends BasePage {
 
         form.addEventListener("submit", (event) => {
             event.preventDefault();
-            let isValid = true;
             
-            const fields: { inputID: string, errorID: string }[] = [
+            const nameFields: { inputID: string, errorID: string }[] = [
                 { inputID: "fname", errorID: "fnameError"},
                 { inputID: "mname", errorID: "mnameError"},
                 { inputID: "lname", errorID: "lnameError"}
             ]
 
-            fields.forEach(({ inputID, errorID }) => {
-                const input = document.getElementById(inputID) as HTMLInputElement;
-                const error = document.getElementById(errorID) as HTMLElement;
-                
-                if (!this.validateName(input, error)) {
-                    isValid = false
-                }
-            })
+            const healthNum: { inputID: string, errorID: string} = { inputID: "healthNum", errorID: "hnumError" };
 
-            if (!isValid) {
+            const validForm = this.handleSubmission(nameFields, healthNum);
+
+            if (!validForm) {
                 event.preventDefault(); // Stop form submission
             }  else {
                 form.submit();
@@ -55,22 +49,71 @@ export class RecordingPage extends BasePage {
         })
     }
 
+    handleSubmission(nameFields: { inputID: string, errorID: string }[], healthNum: { inputID: string, errorID: string }): boolean {
+        let isValid = true;
 
-    validateName(input: HTMLInputElement, error: HTMLElement): boolean {
         const namePattern = /^[A-Za-z\s\-]+$/;
-        
-        if (!namePattern.test(input.value) && input.value.trim() !== "") {
-            this.invalidStyling(input, error)
+        const healthNumPattern = /^[0-9\s\-]+$/;
+
+
+        // Check names 
+        nameFields.forEach(({ inputID, errorID }) => {
+            const nameInput = document.getElementById(inputID) as HTMLInputElement;
+            const nameError = document.getElementById(errorID) as HTMLElement;
+            
+            if (!this.validateInput(nameInput, nameError, namePattern)) {
+                isValid = false;
+            }
+        });
+
+        // Check health number
+        const healthNumInput = document.getElementById(healthNum.inputID) as HTMLInputElement;
+        const healthNumError = document.getElementById(healthNum.errorID) as HTMLElement;
+
+        if(!this.validateInput(healthNumInput, healthNumError, healthNumPattern)) {
+            isValid = false;
+        }
+
+        return isValid
+    }
+
+    validateInput(input: HTMLInputElement, error: HTMLElement, pattern: RegExp) {
+        if (!pattern.test(input.value) && input.value.trim() !== "") {
+            // Invalid input
+            this.invalidStyling(input, error);
             return false;
         } else {
+            // Valid input
             input.style.border = "";
             error.textContent = "";
             return true;
-        }
+        }   
     }
 
+    // validateName(input: HTMLInputElement, error: HTMLElement): boolean {
+    //     const namePattern = /^[A-Za-z\s\-]+$/;
+        
+    //     if (!namePattern.test(input.value) && input.value.trim() !== "") {
+    //         this.invalidStyling(input, error);
+    //         return false;
+    //     } else {
+    //         input.style.border = "";
+    //         error.textContent = "";
+    //         return true;
+    //     }
+    // }
+
+
     invalidStyling(input: HTMLInputElement, error: HTMLElement): void {
-        const errorMessage = "Only alphabets, spaces, and hyphens are allowed.";
+        const errorID = error.getAttribute("id");
+        let errorMessage = ""
+        
+        if (errorID === "hnumError") {
+            errorMessage = "Only digits (0-9), spaces, and hypens are allowed."
+        } else {
+            errorMessage = "Only alphabets, spaces, and hyphens are allowed.";
+        }
+        
         error.textContent = errorMessage;
         error.style.display = "block";
         error.style.color = "#ff6687";
