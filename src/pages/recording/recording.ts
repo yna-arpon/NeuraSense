@@ -1,5 +1,6 @@
 import { error } from "console";
 import { BasePage } from "../../controllers/basePage";
+import { toASCII } from "punycode";
 
 export class RecordingPage extends BasePage {
     constructor() {
@@ -21,13 +22,14 @@ export class RecordingPage extends BasePage {
             }
         });
 
-        // Add event listeners to all required fields
+        // Add event listeners to all required fields to check if they are filled and enable submit btn
         form.querySelectorAll("input[required]").forEach(input => {
             input.addEventListener("input", () => {
-                submitBtn.disabled = !form.checkValidity(); 
+                submitBtn.disabled = !form.checkValidity();
             });
         });
 
+        // Check values when user clicks submit
         form.addEventListener("submit", (event) => {
             event.preventDefault();
             
@@ -36,7 +38,6 @@ export class RecordingPage extends BasePage {
                 { inputID: "mname", errorID: "mnameError"},
                 { inputID: "lname", errorID: "lnameError"}
             ]
-
             const healthNum: { inputID: string, errorID: string} = { inputID: "healthNum", errorID: "hnumError" };
 
             const validForm = this.handleSubmission(nameFields, healthNum);
@@ -49,12 +50,13 @@ export class RecordingPage extends BasePage {
         })
     }
 
-    handleSubmission(nameFields: { inputID: string, errorID: string }[], healthNum: { inputID: string, errorID: string }): boolean {
+    handleSubmission(nameFields: { inputID: string, errorID: string }[], 
+        healthNum: { inputID: string, errorID: string }): boolean {
+        
         let isValid = true;
 
         const namePattern = /^[A-Za-z\s\-]+$/;
         const healthNumPattern = /^[0-9\s\-]+$/;
-
 
         // Check names 
         nameFields.forEach(({ inputID, errorID }) => {
@@ -73,8 +75,8 @@ export class RecordingPage extends BasePage {
         if(!this.validateInput(healthNumInput, healthNumError, healthNumPattern)) {
             isValid = false;
         }
-
-        return isValid
+        
+        return isValid;
     }
 
     validateInput(input: HTMLInputElement, error: HTMLElement, pattern: RegExp) {
@@ -84,25 +86,10 @@ export class RecordingPage extends BasePage {
             return false;
         } else {
             // Valid input
-            input.style.border = "";
-            error.textContent = "";
+            this.validStyling(input, error);
             return true;
         }   
     }
-
-    // validateName(input: HTMLInputElement, error: HTMLElement): boolean {
-    //     const namePattern = /^[A-Za-z\s\-]+$/;
-        
-    //     if (!namePattern.test(input.value) && input.value.trim() !== "") {
-    //         this.invalidStyling(input, error);
-    //         return false;
-    //     } else {
-    //         input.style.border = "";
-    //         error.textContent = "";
-    //         return true;
-    //     }
-    // }
-
 
     invalidStyling(input: HTMLInputElement, error: HTMLElement): void {
         const errorID = error.getAttribute("id");
@@ -121,5 +108,10 @@ export class RecordingPage extends BasePage {
 
         input.style.border = "1px solid rgb(255, 102, 135)";
         input.style.boxShadow = "rgba(155, 102, 135, 0.2) 0px 2px 8px 0px;";
+    }
+
+    validStyling(input: HTMLInputElement, error: HTMLElement): void {
+        input.style.border = "";
+        error.textContent = "";
     }
 }
