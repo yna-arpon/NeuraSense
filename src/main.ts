@@ -73,7 +73,6 @@ ipcMain.on("prepareTable", async (event) => {
     const preparedData = formatData(data)
     
     event.sender.send("showHistoryTable", preparedData);
-    event.reply("historyPageReady");
 });
 
 function formatData(data: any[]) {
@@ -120,7 +119,9 @@ ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: 
     // Add patient to database
     addPatientToDB(event, formEntries)
         .then(async () => {
-            console.log("Patient added to DB");
+            console.log("Patient successfully added to DB");
+            // Hide Form and show recording page
+            event.sender.send("showRecordingPage")
         })
         .catch((error) => {
             console.error(`[MAIN PROCESS]: Failed to add ${formEntries.name} to DB`)
@@ -139,7 +140,7 @@ async function addPatientToDB(event: IpcMainEvent, formEntries: { name: string, 
 app.on('window-all-closed', () => {
     // Clear db if dev mode
     if(isDev) {
-        // databaseManager.clearDatabase()
+        databaseManager.clearDatabase()
     }
 
     if (!isMac) {

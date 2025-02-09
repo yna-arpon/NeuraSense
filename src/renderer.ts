@@ -3,10 +3,12 @@ import { ipcRenderer } from "electron";
 import { NavBar } from "./components/navbar";
 import { PageManager } from "./controllers/pageManager";
 
-const navBarContainer = document.getElementById("navBarDiv");
-const pageContentsDiv = document.getElementById("pageContents");
+const navBarContainer = document.getElementById("navBarDiv") as HTMLDivElement;
+const pageContentsDiv = document.getElementById("pageContents") as HTMLDivElement;
 const pageManager = new PageManager()
 
+
+// ------------------------------- NAVIGATION FUNCTIONALITY -------------------------------
 // Append the navigation bar once
 const navBar = new NavBar();
 if (navBarContainer) {
@@ -66,6 +68,8 @@ loadPage("home")
 ipcRenderer.on("navigate", (event, page) => {
     loadPage(page)
 })
+
+// ------------------------------- HISTORY PAGE FUNCTIONALITY -------------------------------
 
 // Render history page
 ipcRenderer.on("showHistoryTable", (event, data) => {
@@ -159,3 +163,27 @@ function createCell(content: string): HTMLTableCellElement {
     cell.textContent = content;
     return cell;
 }
+
+// ------------------------------- RECORDING PAGE FUNCTIONALITY -------------------------------
+
+// Hide patient form and show recording page
+ipcRenderer.on("showRecordingPage", (event) => {
+    // Hide patient form
+    const patientForm = document.getElementById("addPatientDiv") as HTMLDivElement;
+    patientForm.style.display = "none"
+
+    // Show recording page
+    const recordingPage = document.getElementById("recordingDiv") as HTMLDivElement;
+    recordingPage.style.display = "flex"
+
+    // Hide nav bar - once we enter the recording page
+    navBarContainer.style.display = "none"
+
+    // Resyle page contents div 
+    pageContentsDiv.style.paddingLeft = "0"
+    pageContentsDiv.style.margin = "5vw" 
+
+    // Later for reference - original page contents styling
+    // padding-left: 5%;
+    // margin: 0vw 5vw 0vw 3vw;
+});

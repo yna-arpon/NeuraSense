@@ -1,7 +1,7 @@
 body {
     font-family: 'Poppins';
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     margin: 0;
 }
 
@@ -19,7 +19,7 @@ h2 {
     color: #C4396B;
     font-size: 1.5rem;
     margin-bottom: 3vh;
-    margin-top: 1vh;
+    margin-top: 0;
 }
 
 table {
@@ -54,7 +54,7 @@ tbody {
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 100vh;
+    height: 100%;
 }
 
 #navBarDiv {
