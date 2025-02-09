@@ -5,6 +5,19 @@ import { eventNames } from "process";
 
 const isDev = process.env.NODE_ENV !== "production"
 const isMac = process.platform === 'darwin';
+const isWin = process.platform === 'win32';
+
+// Get icon path
+const baseDir = path.join(__dirname, "..", "assets", "images", "icons");
+let iconDir = ""
+
+if (isMac) {
+    iconDir = path.join(baseDir, "NeuraSense Logo.icns");
+} else if (isWin) {
+    iconDir = path.join(baseDir, "NeuraSense Logo.ico");
+} else {
+    iconDir = path.join(baseDir, "NeuraSense Logo.png");
+}
 
 let mainWindow : BrowserWindow;
 
@@ -23,6 +36,7 @@ function createWindows(): void {
         height: height,
         minWidth: 900,
         minHeight: 600,
+        icon: path.join(__dirname, "..", "assets", "images", "icons", "NeuraSense Logo.icns"),
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false

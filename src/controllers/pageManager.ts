@@ -16,7 +16,6 @@ export class PageManager {
 
     setupPage(pageName: string): void {
         // Retrieve class associated with the page name
-        console.log("[PAGE MANAGER]: Setting up ", pageName)
         const Page = this.pages[pageName];
         
         if (Page) {
