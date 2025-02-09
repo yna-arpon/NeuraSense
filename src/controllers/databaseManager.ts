@@ -55,8 +55,8 @@ export class DatabaseManager {
         healthNumber: number;
         patientName: string;
         birthdate: Date;
-        ecmoStart: Date;
-        ecmoEnd: Date;
+        ecmoStart: Date | null;
+        ecmoEnd: Date | null;
         eegFile: string | null;
         fNIRSFile: string | null;
     }[]> {
@@ -108,6 +108,22 @@ export class DatabaseManager {
             reject(error);
         }
       });
+    }
+    
+    addPatientRecord(patientData: { name: string, healthNum: number, birthdate: string}) {
+      return new Promise<void>((resolve, reject) => {
+        try {
+          const addPatient = db.prepare(`
+            INSERT OR IGNORE INTO Patient (healthNumber, patientName, birthdate) VALUES (?, ?, ?)
+          `)
+          // Add Patients
+          addPatient.run(patientData.healthNum, patientData.name, patientData.birthdate);
+          resolve()
+        } catch (error) {
+          console.error("[DB MANAGER]: Unable to add patient", error);
+          reject(error)
+        }
+      })
     }
 
     clearDatabase(): void {

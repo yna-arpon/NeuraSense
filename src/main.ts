@@ -111,10 +111,27 @@ ipcMain.on("deleteRecord",(event, recordID) => {
 async function deleteRecordFromDB(event: IpcMainEvent, recordID: number) {
     try {
        await databaseManager.deleteRecord(recordID);
-
-       const remainingData = await databaseManager.getData();
     } catch (error) {
         throw new Error("Failed to delete record from database")
+    }
+}
+
+ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: number, birthdate: string}) => {
+    // Add patient to database
+    addPatientToDB(event, formEntries)
+        .then(async () => {
+            console.log("Patient added to DB");
+        })
+        .catch((error) => {
+            console.error(`[MAIN PROCESS]: Failed to add ${formEntries.name} to DB`)
+        })
+})
+
+async function addPatientToDB(event: IpcMainEvent, formEntries: { name: string, healthNum: number, birthdate: string}) {
+    try {
+        await databaseManager.addPatientRecord(formEntries);
+    } catch (error) {
+        throw new Error("Unable to add patient to database")
     }
 }
 
@@ -122,7 +139,7 @@ async function deleteRecordFromDB(event: IpcMainEvent, recordID: number) {
 app.on('window-all-closed', () => {
     // Clear db if dev mode
     if(isDev) {
-        databaseManager.clearDatabase()
+        // databaseManager.clearDatabase()
     }
 
     if (!isMac) {

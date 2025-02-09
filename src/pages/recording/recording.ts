@@ -1,6 +1,7 @@
 import { error } from "console";
 import { BasePage } from "../../controllers/basePage";
 import { toASCII } from "punycode";
+import { ipcMain, ipcRenderer } from "electron";
 
 export class RecordingPage extends BasePage {
     constructor() {
@@ -38,14 +39,37 @@ export class RecordingPage extends BasePage {
                 { inputID: "mname", errorID: "mnameError"},
                 { inputID: "lname", errorID: "lnameError"}
             ]
+
             const healthNum: { inputID: string, errorID: string} = { inputID: "healthNum", errorID: "hnumError" };
 
             const validForm = this.handleSubmission(nameFields, healthNum);
 
             if (!validForm) {
                 event.preventDefault(); // Stop form submission
-            }  else {
-                form.submit();
+            } else {
+                // Get input values
+                const fNameInput = document.getElementById(nameFields[0].inputID) as HTMLInputElement;
+                const fName = fNameInput.value.trim();
+
+                const mnameInput = document.getElementById(nameFields[1].inputID) as HTMLInputElement;
+                const mname = mnameInput ? mnameInput.value.trim() : "";
+
+                const lnameInput = document.getElementById(nameFields[2].inputID) as HTMLInputElement;
+                const lname = lnameInput.value.trim();
+
+                const healthNumInput = document.getElementById(healthNum.inputID) as HTMLInputElement;
+                const healthNumVal = Number(healthNumInput.value.trim());
+
+                const bdateInput = document.getElementById("birthdate") as HTMLInputElement;
+                const bdate = bdateInput.value
+
+                const formFields: { name: string, healthNum: number, birthdate: string} = {
+                    name: `${fName} ${mname} ${lname}`,
+                    healthNum: healthNumVal,
+                    birthdate: bdate
+                }
+
+                ipcRenderer.send("submitPatientForm", formFields);
             } 
         })
     }
@@ -56,7 +80,7 @@ export class RecordingPage extends BasePage {
         let isValid = true;
 
         const namePattern = /^[A-Za-z\s\-]+$/;
-        const healthNumPattern = /^[0-9\s\-]+$/;
+        const healthNumPattern = /^[0-9]+$/;
 
         // Check names 
         nameFields.forEach(({ inputID, errorID }) => {
@@ -96,7 +120,7 @@ export class RecordingPage extends BasePage {
         let errorMessage = ""
         
         if (errorID === "hnumError") {
-            errorMessage = "Only digits (0-9), spaces, and hypens are allowed."
+            errorMessage = "Only digits (0-9) allowed."
         } else {
             errorMessage = "Only alphabets, spaces, and hyphens are allowed.";
         }
