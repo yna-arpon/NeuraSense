@@ -201,10 +201,13 @@ const channelColors = {
     af8: 'rgb(0, 112, 220)', // Blue
     tp9: 'rgb(50, 205, 50)', // Green
     tp8: 'rgb(255, 165, 0)', // Orange
-  };
+};
   
-  // Create graphs without legends
-  function createGraph(canvasId: string, borderColor: string) {
+// Store references to charts
+const charts: { [key: string]: Chart } = {};
+  
+// Create graphs without legends
+function createGraph(canvasId: string, borderColor: string) {
     const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
     if (!canvas) {
       console.error(`${canvasId} canvas not found!`);
@@ -217,7 +220,7 @@ const channelColors = {
       return;
     }
   
-    new Chart(ctx, {
+    const chart = new Chart(ctx, {
       type: 'line',
       data: {
         labels: Array(50).fill(''), // Labels for X-axis
@@ -233,6 +236,7 @@ const channelColors = {
       options: {
         responsive: true,
         maintainAspectRatio: false, // Ensure graph adapts to canvas size
+        animation: false, // Disable animation for smoother updates
         scales: {
           x: { grid: { display: false } },
           y: { grid: { display: false } },
@@ -242,35 +246,57 @@ const channelColors = {
         },
       },
     });
-  }
+  
+    // Save reference to the chart for later updates
+    charts[canvasId] = chart;
+}
   
   // Add consolidated legend
-  function createLegend(legenedContainerID:string) {
-    const legendContainer = document.getElementById(legenedContainerID);
+function createLegend(legendID:string) {
+    const legendContainer = document.getElementById(legendID);
     if (!legendContainer) {
-      console.error('Legend container not found!');
-      return;
+        console.error('Legend container not found!');
+        return;
     }
-  
+
     legendContainer.innerHTML = ''; // Clear existing legends
-  
+
     // Add a legend item for each channel
     Object.entries(channelColors).forEach(([channel, color]) => {
-      const legendItem = document.createElement('div');
-      legendItem.className = 'legend-item';
-  
-      const colorBox = document.createElement('span');
-      colorBox.className = 'legend-color';
-      colorBox.style.backgroundColor = color;
-  
-      const label = document.createElement('span');
-      label.textContent = channel.toUpperCase();
-  
-      legendItem.appendChild(colorBox);
-      legendItem.appendChild(label);
-      legendContainer.appendChild(legendItem);
+        const legendItem = document.createElement('div');
+        legendItem.className = 'legend-item';
+
+        const colorBox = document.createElement('span');
+        colorBox.className = 'legend-color';
+        colorBox.style.backgroundColor = color;
+
+        const label = document.createElement('span');
+        label.textContent = channel.toUpperCase();
+
+        legendItem.appendChild(colorBox);
+        legendItem.appendChild(label);
+        legendContainer.appendChild(legendItem);
     });
-  }
+}
+  
+  // Update data in real-time
+function updateGraphs() {
+    Object.keys(charts).forEach((canvasId) => {
+        const chart = charts[canvasId];
+
+        // Add new random data point (replace with actual EEG data if available)
+        const newData = Math.random() * 2;
+        chart.data.datasets[0].data.push(newData);
+
+        // Remove the oldest data point
+        if (chart.data.datasets[0].data.length > 50) {
+        chart.data.datasets[0].data.shift();
+        }
+
+        // Update the chart
+        chart.update();
+    });
+}
   
 // Create all EEG graphs and the consolidated legend
 function createEGGraphs() {
@@ -280,6 +306,9 @@ function createEGGraphs() {
     createGraph('tp8EEGCanvas', channelColors.tp8);
 
     createLegend('legendEEGContainer'); // Add consolidated legend
+
+    // Start updating graphs every 100ms
+    setInterval(updateGraphs, 100);
 }
 
 // Create all EEG graphs and the consolidated legend
@@ -290,4 +319,7 @@ function createfNIRSGraphs() {
     createGraph('tp8fNIRSCanvas', channelColors.tp8);
 
     createLegend('legendfNIRSContainer'); // Add consolidated legend
+
+    // Start updating graphs every 100ms
+    setInterval(updateGraphs, 100);
 }
