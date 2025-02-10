@@ -181,7 +181,7 @@ ipcRenderer.on("showRecordingPage", (event) => {
 
     // Resyle page contents div 
     pageContentsDiv.style.paddingLeft = "0"
-    pageContentsDiv.style.margin = "5vw" 
+    pageContentsDiv.style.margin = "3.5vw" 
 
     // Later for reference - original page contents styling
     // padding-left: 5%;

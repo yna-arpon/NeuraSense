@@ -31,7 +31,68 @@
             </div>
         </div>
         <div id="recordingDiv">
-            <h2>RECORDING PAGE!</h2>
+            <div id="summaryInfo">
+                <h3 id="patientName">John Doe</h3>
+                <p id="todayDate">February 9, 2025</p>
+            </div>
+            <div id="recordingContents">
+                <div id="leftContent" class="recordingContainers">
+                    <div id="strokeAssesmentContainer">
+                        <h3 class="recordingHeadings">Stroke Assessment</h3>
+                        <div id="strokeAssesmentDiv" class="chartsContainer">
+                            <div id="strokeRiskDiv">
+                                <div id="strokeRiskLevel" class="strokeRiskContent">LOW</div>
+                                <div i="strokeRiskLabel" class="strokeRiskContent">risk of stroke</div>
+                            </div>
+                            <div id="liveDataContainer">
+                                <div id="eegData" class="graphContainer">
+                                    <div id="eegLabelRow" class="labelRow">
+                                        <div id="eegIcon" class="graphIconContainer"><i class="bi bi-activity graphIcon"></i></div>
+                                        <div id="eegLabel" class="signalLabel">EEG</div>
+                                    </div>
+                                    <div id="eegGraph" class="liveGraph">
+
+                                    </div>
+                                </div>
+                                <div id="fNIRSData" class="graphContainer">
+                                    <div id="fNIRSLabelRow" class="labelRow">
+                                        <div id="fNIRSIcon" class="graphIconContainer"><i class="bi bi-heart-pulse graphIcon"></i></div>
+                                        <div id="fNIRSLabel" class="signalLabel">fNIRS</div>
+                                    </div>
+                                    <div id="fNIRSGraph" class="liveGraph">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="rightContent" class="recordingContainers">
+                    <h3 class="recordingHeadings">Stroke Flags</h3>
+                    <div id="flagsContainer" class="chartsContainer">
+                        <div id="eegFlags" class="graphContainer flagDiv">
+                            <div class="flagRowLabel">EEG Flags</div>
+                            <div class="flagGraph">No EEG Flags</div>
+                        </div>
+                        <div id="fNIRSFlags" class="graphContainer flagDiv">
+                            <div class="flagRowLabel">fNIRS Flags</div>
+                            <div class="flagGraph">No fNIRS Flags</div>
+                        </div>
+                    </div>
+                    <div id="endContainer">
+                        <div id="ecmoDurationContainer" class="chartsContainer">
+                            <div id="ecmoDuration">
+                                <div id="daysIconContainer" class="graphIconContainer"><i id="daysIcon" class="bi bi-calendar-heart graphIcon"></i></i></div>
+                                <p id="ecmoDurationLabel">Days on ECMO</small>
+                                <p id="ecmoDurationDays">7</p>
+                            </div>
+                        </div>
+                        <button id="endSessionBtn">
+                            End Session
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

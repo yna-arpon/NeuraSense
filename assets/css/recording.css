@@ -69,4 +69,228 @@ form {
 
 #recordingDiv {
     display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.recordingHeadings {
+    font-size: 1.5rem;
+}
+
+#recordingContents {
+    display: flex;
+    flex-direction: row;
+    column-gap: 1vw;
+    width: 100%;
+    height: 100%;
+}
+
+#summaryInfo {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 2vw;
+}
+
+.recordingContainers {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    column-gap: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+#strokeAssesmentContainer {
+    width: 100%;
+    height: 100%;
+}
+
+#strokeRiskDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(16, 144, 10, 0.2);
+    border: 0.5px solid #10900A;
+    box-shadow: rgba(18, 144, 10, 0.25) 0px 8px 24px;
+    border-radius: 500px;
+    width: 20%;
+    height: 23%;
+    margin: 20px;
+}
+
+#strokeRiskLevel {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.strokeRiskContent {
+    width: 90%;
+    color: #10900A;
+    text-align: center;
+}
+
+#strokeAssesmentDiv {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    height: 95%;
+    align-items: center;
+}
+
+#liveDataContainer {
+    display: flex;
+    flex-direction: row;
+    column-gap: 17px;
+    width: 95%;
+    height: 68%;
+    justify-content: space-between;
+}
+
+.graphContainer {
+    background-color: white;
+    border-radius: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.labelRow {
+    width: 90%;
+    margin: 19px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.graphIconContainer {
+    background: #F5F5F5;
+    border-radius: 40px
+}
+
+.graphIcon {
+    font-size: 2rem;
+    color: #E55D7D;
+    padding: 8px;
+}
+
+.signalLabel {
+    font-size: 1.5rem;
+}
+
+.chartsContainer {
+    border: none;
+    background-color: #F8F9FA;
+    border-radius: 25px;
+    width: 100%;
+    height: 100%;
+}
+
+.chartDiv {
+    border: none;
+    background-color: white;
+    border-radius: 60px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+#rightContent {
+    width: 70%;
+}
+
+.flagDiv {
+    width: 93%;
+    height: 45%;
+    flex-direction: column;
+    align-items: normal;
+    justify-content: flex-start;
+}
+
+#flagsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 15px;
+}
+
+.flagRowLabel {
+    display: flex;
+    align-items: flex-end;
+    color: #989898;
+    justify-content: flex-end;
+    margin: 17px 29px 10px;
+}
+
+.flagGraph {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #827f7f;;
+    height: 80%;
+}
+
+#endContainer {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    height: 12%;
+    column-gap: 15px;
+}
+
+#ecmoDurationContainer {
+    width: 52%;
+    height: 100%;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#ecmoDuration {
+    background-color: white;
+    width: 93%;
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+}
+
+#ecmoDurationLabel {
+    width: 60%;
+    color: #989898;
+    font-size: 0.8rem;
+}
+
+#daysIconContainer {
+    height: 80%;
+}
+
+#daysIcon {
+    padding: 12px;
+    font-size: 1.6rem;
+}
+
+#endSessionBtn {
+    width: 50%;
+    height: 100%;
+    background: #FF7895;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 16px;
+}
+
+#ecmoDurationDays {
+    width: 4%;
+    FONT-SIZE: 1.4rem;
+    padding-right: 4%;
 }

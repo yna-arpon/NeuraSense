@@ -22,6 +22,16 @@ h2 {
     margin-top: 0;
 }
 
+h3 {
+    color: #C4396B;
+    font-size: 2rem;
+    margin: 0;
+}
+
+p {
+    margin: 0
+}
+
 table {
     table-layout: fixed;
     border-collapse: collapse;
