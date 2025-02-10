@@ -150,22 +150,57 @@ form {
     justify-content: space-between;
 }
 
+.liveGraph {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width:100%;
+    height: 90%;
+}
+
+.liveGraph canvas {
+    flex: 1; 
+    max-height: 19%;
+    width: 100%;
+}
+
 .graphContainer {
     background-color: white;
     border-radius: 20px;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: flex-start;
 }
 
+.legendContainer {
+    display: flex;
+    justify-content: center; /* Center align the legends */
+    gap: 20px; /* Add spacing between legend items */
+    flex-wrap: wrap; /* Allow wrapping if legends don't fit in one row */
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+  
+.legend-color {
+width: 20px;
+height: 10px;
+display: inline-block;
+border-radius: 2px;
+}
+
 .labelRow {
     width: 90%;
-    margin: 19px;
+    margin: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
 }
 
 .graphIconContainer {

@@ -2,11 +2,14 @@ import { ipcRenderer } from "electron";
 
 import { NavBar } from "./components/navbar";
 import { PageManager } from "./controllers/pageManager";
+import { Chart, registerables } from "chart.js";
 
 const navBarContainer = document.getElementById("navBarDiv") as HTMLDivElement;
 const pageContentsDiv = document.getElementById("pageContents") as HTMLDivElement;
 const pageManager = new PageManager()
 
+// Register necessary components
+Chart.register(...registerables);
 
 // ------------------------------- NAVIGATION FUNCTIONALITY -------------------------------
 // Append the navigation bar once
@@ -186,4 +189,105 @@ ipcRenderer.on("showRecordingPage", (event) => {
     // Later for reference - original page contents styling
     // padding-left: 5%;
     // margin: 0vw 5vw 0vw 3vw;
+
+    // Create EEG and fNIRS graphs
+    createEGGraphs();
+    createfNIRSGraphs();
 });
+
+// Colors for each channel
+const channelColors = {
+    af7: 'rgb(220, 20, 60)', // Red
+    af8: 'rgb(0, 112, 220)', // Blue
+    tp9: 'rgb(50, 205, 50)', // Green
+    tp8: 'rgb(255, 165, 0)', // Orange
+  };
+  
+  // Create graphs without legends
+  function createGraph(canvasId: string, borderColor: string) {
+    const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+    if (!canvas) {
+      console.error(`${canvasId} canvas not found!`);
+      return;
+    }
+  
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      console.error(`Failed to get 2D context for ${canvasId} graph!`);
+      return;
+    }
+  
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: Array(50).fill(''), // Labels for X-axis
+        datasets: [
+          {
+            label: canvasId.replace('Canvas', ''), // Remove 'Canvas' from ID for label
+            data: Array.from({ length: 50 }, () => Math.random() * 2), // Replace with actual EEG data
+            borderColor: borderColor,
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false, // Ensure graph adapts to canvas size
+        scales: {
+          x: { grid: { display: false } },
+          y: { grid: { display: false } },
+        },
+        plugins: {
+          legend: { display: false }, // Disable individual chart legends
+        },
+      },
+    });
+  }
+  
+  // Add consolidated legend
+  function createLegend(legenedContainerID:string) {
+    const legendContainer = document.getElementById(legenedContainerID);
+    if (!legendContainer) {
+      console.error('Legend container not found!');
+      return;
+    }
+  
+    legendContainer.innerHTML = ''; // Clear existing legends
+  
+    // Add a legend item for each channel
+    Object.entries(channelColors).forEach(([channel, color]) => {
+      const legendItem = document.createElement('div');
+      legendItem.className = 'legend-item';
+  
+      const colorBox = document.createElement('span');
+      colorBox.className = 'legend-color';
+      colorBox.style.backgroundColor = color;
+  
+      const label = document.createElement('span');
+      label.textContent = channel.toUpperCase();
+  
+      legendItem.appendChild(colorBox);
+      legendItem.appendChild(label);
+      legendContainer.appendChild(legendItem);
+    });
+  }
+  
+// Create all EEG graphs and the consolidated legend
+function createEGGraphs() {
+    createGraph('af7EEGCanvas', channelColors.af7);
+    createGraph('af8EEGCanvas', channelColors.af8);
+    createGraph('tp9EEGCanvas', channelColors.tp9);
+    createGraph('tp8EEGCanvas', channelColors.tp8);
+
+    createLegend('legendEEGContainer'); // Add consolidated legend
+}
+
+// Create all EEG graphs and the consolidated legend
+function createfNIRSGraphs() {
+    createGraph('af7fNIRSCanvas', channelColors.af7);
+    createGraph('af8fNIRSCanvas', channelColors.af8);
+    createGraph('tp9fNIRSCanvas', channelColors.tp9);
+    createGraph('tp8fNIRSCanvas', channelColors.tp8);
+
+    createLegend('legendfNIRSContainer'); // Add consolidated legend
+}
