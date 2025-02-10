@@ -16,12 +16,18 @@ export class RecordingPage extends BasePage {
         const submitBtn = document.getElementById("startRecordingBtn") as HTMLButtonElement;
 
         // Dynamically add * on required fields
-         document.querySelectorAll("input[required]").forEach(input => {
+        document.querySelectorAll("input[required]").forEach(input => {
             let label = document.querySelector(`label[for="${input.id}"]`);
             if (label) {
                 label.innerHTML += ' <span style="color: #742B45;">*</span>';
             }
         });
+
+          // Get today's date
+        const today = new Date().toISOString().split('T')[0];
+            
+        // Set the max attribute of the input field to today's date
+        document.getElementById('birthdate')?.setAttribute('max', today);
 
         // Add event listeners to all required fields to check if they are filled and enable submit btn
         form.querySelectorAll("input[required]").forEach(input => {
