@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "better-sqlite3": "^11.8.1",
-    "chart.js": "^4.4.7"
+    "chart.js": "^4.4.7",
+    "dgram": "^1.0.1"
   }
 }

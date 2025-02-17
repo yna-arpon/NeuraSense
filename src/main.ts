@@ -2,6 +2,7 @@ import { app, ipcMain, BrowserWindow, shell, screen, ipcRenderer, IpcMainEvent }
 import path from "path";
 import { DatabaseManager } from "./controllers/databaseManager";
 import { eventNames } from "process";
+import { setupUDPListener } from "./eegListener";
 
 const isDev = process.env.NODE_ENV !== "production"
 const isMac = process.platform === 'darwin';
@@ -52,18 +53,27 @@ function createWindows(): void {
         databaseManager.insertSampleData()
     }
 
+    // Start UDP listener
+    setupUDPListener();
+
     mainWindow.loadFile(path.join(__dirname, "./index.html"));
     mainWindow.on("ready-to-show", () => mainWindow.show())
 }
 
+// ------------------------------- NAVIGATION FUNCTIONALITY -------------------------------
+
+// Navigate to specific page
 ipcMain.on("navigate", (event, page) => {
     event.sender.send("navigate", page)
 })
 
+// Launch help page
 ipcMain.on("launchHelp", () => {
     let externalURL = "http://google.com" // To be changed with NeuraSense landing page
     shell.openExternal(externalURL)
 })
+
+// ------------------------------- HISTORY PAGE FUNCTIONALITY -------------------------------
 
 // Listen for request to display history page
 ipcMain.on("prepareTable", async (event) => {
@@ -75,6 +85,7 @@ ipcMain.on("prepareTable", async (event) => {
     event.sender.send("showHistoryTable", preparedData);
 });
 
+// Format data to display in history table
 function formatData(data: any[]) {
     let formattedData: String[][] = [];
 
@@ -95,6 +106,7 @@ function formatData(data: any[]) {
     return formattedData
 }
 
+// Delete record from database 
 ipcMain.on("deleteRecord",(event, recordID) => {
     deleteRecordFromDB(event, recordID)
         .then(async () => {
@@ -115,6 +127,10 @@ async function deleteRecordFromDB(event: IpcMainEvent, recordID: number) {
     }
 }
 
+
+// ------------------------------- RECORDING PAGE FUNCTIONALITY -------------------------------
+
+// Add patient to database after user fills out form 
 ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: number, birthdate: string}) => {
     // Add patient to database
     addPatientToDB(event, formEntries)
@@ -136,9 +152,12 @@ async function addPatientToDB(event: IpcMainEvent, formEntries: { name: string, 
     }
 }
 
+// End recording session 
 ipcMain.on("endRecordingSession", (event) => {
     event.sender.send("home")
 })
+
+// ------------------------------- MISC APP FUNCTIONALITY -------------------------------
 
 // When user closes the appliction
 app.on('window-all-closed', () => {
