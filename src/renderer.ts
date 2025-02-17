@@ -184,11 +184,25 @@ ipcRenderer.on("showRecordingPage", (event) => {
 
     // Resyle page contents div 
     pageContentsDiv.style.paddingLeft = "0"
-    pageContentsDiv.style.margin = "3.5vw" 
+    pageContentsDiv.style.margin = "3.5vw"
 
-    // Later for reference - original page contents styling
-    // padding-left: 5%;
-    // margin: 0vw 5vw 0vw 3vw;
+    // Add event listener to end session button
+    const endSessionBtn = document.getElementById("endSessionBtn") as HTMLButtonElement;
+    endSessionBtn.addEventListener('click', (event) => {
+        // Show nav bar - once we enter the recording page
+        navBarContainer.style.display = "flex"
+
+        // Reset page styling div 
+        pageContentsDiv.style.paddingLeft = "5%"
+        pageContentsDiv.style.margin = "0vw 5vw 0vw 3vw" 
+        
+        // Clear intervals 
+        clearInterval(fNIRSInterval); 
+        clearInterval(eggInterval);
+
+        // Navigate back home
+        loadPage("home")
+    })
 
     // Create EEG and fNIRS graphs
     createEGGraphs();
@@ -297,7 +311,10 @@ function updateGraphs() {
         chart.update();
     });
 }
-  
+
+let eggInterval: string | number | NodeJS.Timeout | undefined;
+let fNIRSInterval: string | number | NodeJS.Timeout | undefined;
+
 // Create all EEG graphs and the consolidated legend
 function createEGGraphs() {
     createGraph('af7EEGCanvas', channelColors.af7);
@@ -308,7 +325,7 @@ function createEGGraphs() {
     createLegend('legendEEGContainer'); // Add consolidated legend
 
     // Start updating graphs every 100ms
-    setInterval(updateGraphs, 100);
+    eggInterval = setInterval(updateGraphs, 100);
 }
 
 // Create all EEG graphs and the consolidated legend
@@ -321,5 +338,5 @@ function createfNIRSGraphs() {
     createLegend('legendfNIRSContainer'); // Add consolidated legend
 
     // Start updating graphs every 100ms
-    setInterval(updateGraphs, 100);
+    fNIRSInterval = setInterval(updateGraphs, 100);
 }

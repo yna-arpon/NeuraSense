@@ -136,6 +136,10 @@ async function addPatientToDB(event: IpcMainEvent, formEntries: { name: string, 
     }
 }
 
+ipcMain.on("endRecordingSession", (event) => {
+    event.sender.send("home")
+})
+
 // When user closes the appliction
 app.on('window-all-closed', () => {
     // Clear db if dev mode
