@@ -53,9 +53,6 @@ function createWindows(): void {
         databaseManager.insertSampleData()
     }
 
-    // Start UDP listener
-    setupUDPListener();
-
     mainWindow.loadFile(path.join(__dirname, "./index.html"));
     mainWindow.on("ready-to-show", () => mainWindow.show())
 }
@@ -127,7 +124,6 @@ async function deleteRecordFromDB(event: IpcMainEvent, recordID: number) {
     }
 }
 
-
 // ------------------------------- RECORDING PAGE FUNCTIONALITY -------------------------------
 
 // Add patient to database after user fills out form 
@@ -136,8 +132,12 @@ ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: 
     addPatientToDB(event, formEntries)
         .then(async () => {
             console.log("Patient successfully added to DB");
+
             // Hide Form and show recording page
             event.sender.send("showRecordingPage")
+
+            // Initialize connection to OpenBCI server
+            setupUDPListener(mainWindow); // Start UDP listener
         })
         .catch((error) => {
             console.error(`[MAIN PROCESS]: Failed to add ${formEntries.name} to DB`)
@@ -151,6 +151,11 @@ async function addPatientToDB(event: IpcMainEvent, formEntries: { name: string, 
         throw new Error("Unable to add patient to database")
     }
 }
+
+// Recieved EEG Data
+ipcMain.on('eegDataRecieved', (event, eegData) => {
+    mainWindow.webContents.send('displayEEGData', eegData)
+})
 
 // End recording session 
 ipcMain.on("endRecordingSession", (event) => {

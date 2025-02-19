@@ -11,6 +11,13 @@ const pageManager = new PageManager()
 // Register necessary components
 Chart.register(...registerables);
 
+interface EEGData {
+    ch1?: number[],
+    ch2?: number[],
+    ch3?: number[],
+    ch4?: number[],
+}
+
 // ------------------------------- NAVIGATION FUNCTIONALITY -------------------------------
 // Append the navigation bar once
 const navBar = new NavBar();
@@ -197,8 +204,7 @@ ipcRenderer.on("showRecordingPage", (event) => {
         pageContentsDiv.style.margin = "0vw 5vw 0vw 3vw" 
         
         // Clear intervals 
-        clearInterval(fNIRSInterval); 
-        clearInterval(eggInterval);
+        clearInterval(fNIRSInterval);
 
         // Navigate back home
         loadPage("home")
@@ -209,12 +215,37 @@ ipcRenderer.on("showRecordingPage", (event) => {
     createfNIRSGraphs();
 });
 
+// Create all EEG graphs and the consolidated legend
+function createEGGraphs() {
+    createGraph('ch1EEGCanvas', channelColors.ch1);
+    createGraph('ch2EEGCanvas', channelColors.ch2);
+    createGraph('ch3EEGCanvas', channelColors.ch3);
+    createGraph('ch4EEGCanvas', channelColors.ch4);
+
+    createLegend('legendEEGContainer'); // Add consolidated legend
+}
+
+let fNIRSInterval: string | number | NodeJS.Timeout | undefined;
+
+// Create all EEG graphs and the consolidated legend
+function createfNIRSGraphs() {
+    createGraph('af7fNIRSCanvas', channelColors.ch1);
+    createGraph('af8fNIRSCanvas', channelColors.ch2);
+    createGraph('tp9fNIRSCanvas', channelColors.ch3);
+    createGraph('tp8fNIRSCanvas', channelColors.ch4);
+
+    createLegend('legendfNIRSContainer'); // Add consolidated legend
+
+    // Start updating graphs every 100ms
+    // fNIRSInterval = setInterval(updateGraphs, 100);
+}
+
 // Colors for each channel
 const channelColors = {
-    af7: 'rgb(220, 20, 60)', // Red
-    af8: 'rgb(0, 112, 220)', // Blue
-    tp9: 'rgb(50, 205, 50)', // Green
-    tp8: 'rgb(255, 165, 0)', // Orange
+    ch1: 'rgb(220, 20, 60)', // Red
+    ch2: 'rgb(0, 112, 220)', // Blue
+    ch3: 'rgb(50, 205, 50)', // Green
+    ch4: 'rgb(255, 165, 0)', // Orange
 };
   
 // Store references to charts
@@ -241,9 +272,11 @@ function createGraph(canvasId: string, borderColor: string) {
         datasets: [
           {
             label: canvasId.replace('Canvas', ''), // Remove 'Canvas' from ID for label
-            data: Array.from({ length: 50 }, () => Math.random() * 2), // Replace with actual EEG data
+            data: [], //
             borderColor: borderColor,
             borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.1,
           },
         ],
       },
@@ -253,7 +286,11 @@ function createGraph(canvasId: string, borderColor: string) {
         animation: false, // Disable animation for smoother updates
         scales: {
           x: { grid: { display: false } },
-          y: { grid: { display: false } },
+          y: { 
+            grid: { display: false },
+            max: 800,
+            min: -800
+        },
         },
         plugins: {
           legend: { display: false }, // Disable individual chart legends
@@ -292,8 +329,59 @@ function createLegend(legendID:string) {
         legendContainer.appendChild(legendItem);
     });
 }
-  
-  // Update data in real-time
+
+// Update EEG Graph when we recieve EEG data
+ipcRenderer.on('displayEEGData', (event, eegMessage) => {
+    console.log("EEG data recieved in renderer: ", eegMessage)
+
+    // Ensure data is structured correctly
+    if (!eegMessage || !Array.isArray(eegMessage.data)) {
+        console.error("Invalid EEG data format:", eegMessage);
+        return;
+    }
+
+    const eegChannels = ["ch1", "ch2", "ch3", "ch4"];
+    const eegData: { [key: string]: number[] } = {};
+
+    // Map each row of incoming EEG data into the respective channel 
+    eegChannels.forEach((channel, index) => {
+        eegData[channel] = eegMessage.data[index] || [];
+    })
+
+    updateEEGGraphs(eegData)
+})
+
+function updateEEGGraphs(eegData: EEGData) {
+    Object.entries(eegData).forEach(([channel, newData]) => {
+        const canvasId = `${channel}EEGCanvas`; 
+        const chart = charts[canvasId];
+
+        if (!chart) {
+            console.warn(`Chart for ${canvasId} not found.`);
+            return;
+        }
+
+        if (!Array.isArray(newData) || newData.length === 0) {
+            console.warn(`Invalid or empty data for ${channel}:`, newData);
+            return;
+        }
+        
+        if (chart && Array.isArray(newData)) {
+            // Push new data points into the chart
+            chart.data.datasets[0].data.push(...newData);
+
+            // Keep only the last 50 data points
+            while (chart.data.datasets[0].data.length > 50) {
+                chart.data.datasets[0].data.shift();
+            }
+
+            // Update the chart
+            chart.update();
+        }
+    });
+}
+
+// Update data in real-time
 function updateGraphs() {
     Object.keys(charts).forEach((canvasId) => {
         const chart = charts[canvasId];
@@ -310,33 +398,4 @@ function updateGraphs() {
         // Update the chart
         chart.update();
     });
-}
-
-let eggInterval: string | number | NodeJS.Timeout | undefined;
-let fNIRSInterval: string | number | NodeJS.Timeout | undefined;
-
-// Create all EEG graphs and the consolidated legend
-function createEGGraphs() {
-    createGraph('af7EEGCanvas', channelColors.af7);
-    createGraph('af8EEGCanvas', channelColors.af8);
-    createGraph('tp9EEGCanvas', channelColors.tp9);
-    createGraph('tp8EEGCanvas', channelColors.tp8);
-
-    createLegend('legendEEGContainer'); // Add consolidated legend
-
-    // Start updating graphs every 100ms
-    eggInterval = setInterval(updateGraphs, 100);
-}
-
-// Create all EEG graphs and the consolidated legend
-function createfNIRSGraphs() {
-    createGraph('af7fNIRSCanvas', channelColors.af7);
-    createGraph('af8fNIRSCanvas', channelColors.af8);
-    createGraph('tp9fNIRSCanvas', channelColors.tp9);
-    createGraph('tp8fNIRSCanvas', channelColors.tp8);
-
-    createLegend('legendfNIRSContainer'); // Add consolidated legend
-
-    // Start updating graphs every 100ms
-    fNIRSInterval = setInterval(updateGraphs, 100);
 }
