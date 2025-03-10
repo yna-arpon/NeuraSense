@@ -149,7 +149,11 @@ function attachDeleteListeners(): void {
             const recordID = Number(btn.getAttribute("recordID"));
 
             if (recordID) {
-                ipcRenderer.send("deleteRecord", recordID);
+                ipcRenderer.invoke("confirmRecordDelete").then((result: Electron.MessageBoxReturnValue) => {
+                    if (result.response === 0) {
+                        ipcRenderer.send("deleteRecord", recordID);
+                    }
+                })
             } else {
                 console.error("[HISTORY RENDERER]: Record ID not found");
             }
@@ -198,7 +202,6 @@ ipcRenderer.on("showRecordingPage", (event) => {
     endSessionBtn.addEventListener('click', (event) => {
         ipcRenderer.invoke("confirmEndSession").then((result: Electron.MessageBoxReturnValue) => {
             if (result.response === 0) {
-                // End session confirmed 
                 endSession()
             }
         })

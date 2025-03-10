@@ -116,8 +116,15 @@ ipcMain.on("deleteRecord",(event, recordID) => {
         })
 })
 
+ipcMain.handle("confirmRecordDelete", async () => {
+    const response = await confirmAction('Confirm Deletion', 
+        'Are you sure you want to delete this record?', 
+        ['Delete', 'Cancel'])
+    return response
+})
+
 async function deleteRecordFromDB(event: IpcMainEvent, recordID: number) {
-    try {
+    try { 
        await databaseManager.deleteRecord(recordID);
     } catch (error) {
         throw new Error("Failed to delete record from database")
@@ -161,11 +168,13 @@ ipcMain.on("endRecordingSession", (event) => {
 })
 
 ipcMain.handle("confirmEndSession", async () => {
-    const response = confirmAction('Confirm End Session', 
+    const response = await confirmAction('Confirm End Session', 
         'Are you sure you want to end the session?', 
         ['End Session', 'Cancel'])
     return response
 })
+
+// ------------------------------- MISC APP FUNCTIONALITY -------------------------------
 
 async function confirmAction(title: string, message: string, buttons: string[]) {
     const response = await dialog.showMessageBox(mainWindow, {
@@ -179,8 +188,6 @@ async function confirmAction(title: string, message: string, buttons: string[]) 
 
     return response
 }
-
-// ------------------------------- MISC APP FUNCTIONALITY -------------------------------
 
 // When user closes the appliction
 app.on('window-all-closed', () => {
