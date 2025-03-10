@@ -332,8 +332,6 @@ function createLegend(legendID:string) {
 
 // Update EEG Graph when we recieve EEG data
 ipcRenderer.on('displayEEGData', (event, eegMessage) => {
-    console.log("EEG data recieved in renderer: ", eegMessage)
-
     // Ensure data is structured correctly
     if (!eegMessage || !Array.isArray(eegMessage.data)) {
         console.error("Invalid EEG data format:", eegMessage);

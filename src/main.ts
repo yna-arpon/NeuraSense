@@ -131,8 +131,6 @@ ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: 
     // Add patient to database
     addPatientToDB(event, formEntries)
         .then(async () => {
-            console.log("Patient successfully added to DB");
-
             // Hide Form and show recording page
             event.sender.send("showRecordingPage")
 
