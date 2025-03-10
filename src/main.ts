@@ -161,19 +161,24 @@ ipcMain.on("endRecordingSession", (event) => {
 })
 
 ipcMain.handle("confirmEndSession", async () => {
+    const response = confirmAction('Confirm End Session', 
+        'Are you sure you want to end the session?', 
+        ['End Session', 'Cancel'])
+    return response
+})
+
+async function confirmAction(title: string, message: string, buttons: string[]) {
     const response = await dialog.showMessageBox(mainWindow, {
         type: 'warning',
-        title: 'Confirm End Session',
-        message: 'Are you sure you want to end the session?',
-        buttons: ['End Session', 'Cancel'],
+        title: title,
+        message: message,
+        buttons: buttons,
         defaultId: 0,
         cancelId: 1
     }); 
 
-    console.log(response)
-
     return response
-})
+}
 
 // ------------------------------- MISC APP FUNCTIONALITY -------------------------------
 
