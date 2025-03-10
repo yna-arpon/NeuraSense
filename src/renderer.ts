@@ -135,7 +135,7 @@ function createDeleteCell(recording: string[]): HTMLTableCellElement {
     const deleteCell = document.createElement("td");
     const deleteButton = document.createElement("button");
     deleteButton.classList.add("deleteBtn");
-    deleteButton.innerHTML = `<i class="bi bi-trash"></i>`; // Bootstrap trash icon
+    deleteButton.innerHTML = `<i class="bi bi-trash3"></i>`; // Bootstrap trash icon
     deleteButton.setAttribute("recordID", recording[0]); 
     deleteCell.appendChild(deleteButton);
     return deleteCell
@@ -157,6 +157,14 @@ function attachDeleteListeners(): void {
             } else {
                 console.error("[HISTORY RENDERER]: Record ID not found");
             }
+        })
+
+        btn.addEventListener('mouseover', () => {
+            btn.innerHTML = `<i class="bi bi-trash3-fill"></i>`; // Filled trash icon
+        })
+
+        btn.addEventListener('mouseout', () => {
+            btn.innerHTML = `<i class="bi bi-trash3"></i>`; // trash icon
         })
     })
 }

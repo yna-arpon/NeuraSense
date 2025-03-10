@@ -2,8 +2,6 @@ import  * as fs from 'fs';
 import * as path from 'path';
 import { ipcRenderer } from "electron";
 
-
-
 export class NavBar {
     private element: HTMLElement;
 
