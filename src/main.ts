@@ -1,4 +1,4 @@
-import { app, ipcMain, BrowserWindow, shell, screen, ipcRenderer, IpcMainEvent } from "electron"
+import { app, ipcMain, BrowserWindow, shell, screen, dialog, IpcMainEvent } from "electron"
 import path from "path";
 import { DatabaseManager } from "./controllers/databaseManager";
 import { eventNames } from "process";
@@ -152,12 +152,27 @@ async function addPatientToDB(event: IpcMainEvent, formEntries: { name: string, 
 
 // Recieved EEG Data
 ipcMain.on('eegDataRecieved', (event, eegData) => {
-    mainWindow.webContents.send('displayEEGData', eegData)
+    mainWindow.webContents.send('displayEEGData', eegData);
 })
 
 // End recording session 
 ipcMain.on("endRecordingSession", (event) => {
-    event.sender.send("home")
+    event.sender.send("home");
+})
+
+ipcMain.handle("confirmEndSession", async () => {
+    const response = await dialog.showMessageBox(mainWindow, {
+        type: 'warning',
+        title: 'Confirm End Session',
+        message: 'Are you sure you want to end the session?',
+        buttons: ['End Session', 'Cancel'],
+        defaultId: 0,
+        cancelId: 1
+    }); 
+
+    console.log(response)
+
+    return response
 })
 
 // ------------------------------- MISC APP FUNCTIONALITY -------------------------------

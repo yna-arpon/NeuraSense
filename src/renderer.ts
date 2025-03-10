@@ -196,24 +196,32 @@ ipcRenderer.on("showRecordingPage", (event) => {
     // Add event listener to end session button
     const endSessionBtn = document.getElementById("endSessionBtn") as HTMLButtonElement;
     endSessionBtn.addEventListener('click', (event) => {
-        // Show nav bar - once we enter the recording page
-        navBarContainer.style.display = "flex"
-
-        // Reset page styling div 
-        pageContentsDiv.style.paddingLeft = "5%"
-        pageContentsDiv.style.margin = "0vw 5vw 0vw 3vw" 
-        
-        // Clear intervals 
-        clearInterval(fNIRSInterval);
-
-        // Navigate back home
-        loadPage("home")
+        ipcRenderer.invoke("confirmEndSession").then((result: Electron.MessageBoxReturnValue) => {
+            if (result.response === 0) {
+                // End session confirmed 
+                endSession()
+            }
+        })
     })
 
     // Create EEG and fNIRS graphs
     createEGGraphs();
     createfNIRSGraphs();
 });
+
+function endSession() {
+    navBarContainer.style.display = "flex"
+
+    // Reset page styling div 
+    pageContentsDiv.style.paddingLeft = "5%"
+    pageContentsDiv.style.margin = "0vw 5vw 0vw 3vw" 
+    
+    // Clear intervals 
+    clearInterval(fNIRSInterval);
+
+    // Navigate back home
+    loadPage("home")
+}
 
 // Create all EEG graphs and the consolidated legend
 function createEGGraphs() {
