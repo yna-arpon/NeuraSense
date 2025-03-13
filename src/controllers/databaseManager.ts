@@ -14,7 +14,10 @@ export class DatabaseManager {
             CREATE TABLE IF NOT EXISTS Patient (
               healthNumber INTEGER PRIMARY KEY,
               patientName TEXT NOT NULL,
-              birthdate DATE NOT NULL
+              birthdate DATE NOT NULL,
+              ecmoReason TEXT,
+              acuteSituation TEXT,
+              riskFactors TEXT
             );
           
             CREATE TABLE IF NOT EXISTS Recording (
@@ -32,7 +35,7 @@ export class DatabaseManager {
     // Generate sample data for testing 
     insertSampleData() {
         const insertPatient = db.prepare(`
-          INSERT OR IGNORE INTO Patient (healthNumber, patientName, birthdate) VALUES (?, ?, ?)
+          INSERT OR IGNORE INTO Patient (healthNumber, patientName, birthdate, ecmoReason, acuteSituation, riskFactors) VALUES (?, ?, ?, ?, ?, ?)
         `);
       
         const insertRecording = db.prepare(`
@@ -41,8 +44,8 @@ export class DatabaseManager {
         `);
       
         // Add Patients
-        insertPatient.run(1234, 'John Doe', '2015-06-15');
-        insertPatient.run(5678, 'Jane Smith', '2012-11-25');
+        insertPatient.run(1234, 'John Doe', '2015-06-15','Heart Disease','Severe','Weak immune system');
+        insertPatient.run(5678, 'Jane Smith', '2012-11-25','Lung Disease','Acute','Very weak immune system');
       
         // Add Recordings
         insertRecording.run(1234, '2023-01-01 10:00:00', '2023-01-15 12:00:00');

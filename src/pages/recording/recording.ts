@@ -23,7 +23,7 @@ export class RecordingPage extends BasePage {
             }
         });
 
-          // Get today's date
+        // Get today's date
         const today = new Date().toISOString().split('T')[0];
             
         // Set the max attribute of the input field to today's date
@@ -35,6 +35,23 @@ export class RecordingPage extends BasePage {
                 submitBtn.disabled = !form.checkValidity();
             });
         });
+
+        // Event listener to add more information
+        const addMoreInfo = document.getElementById('addMoreInfoButton') as HTMLButtonElement;
+        const addInfoDiv = document.getElementById('additionalInfoDiv') as HTMLDivElement;
+
+        addMoreInfo?.addEventListener("click", (event) => {
+            event.preventDefault(); // Prevents default button behavior
+
+            // Toggle visibility
+            if (addInfoDiv.style.display === "none" || addInfoDiv.style.display === "") {
+                addMoreInfo.style.display = "none";
+                addInfoDiv.style.display = "block";
+                addInfoDiv.scrollIntoView({ behavior: "smooth", block: "start" });
+            } else {
+                addInfoDiv.style.display = "none";
+        }
+        })
 
         // Check values when user clicks submit
         form.addEventListener("submit", (event) => {

@@ -4,30 +4,48 @@
     <div class="contents">
         <div id="addPatientDiv"> 
             <div id="addPatientForm">
-                <h2>Add a New Patient</h2>
-                <form name="patientForm" id="patientFieldsContainer">
-                    <label for="fname">First name</label><br>
-                    <input type="text" id="fname" name="fname" required="required"><br>
-                    <div class="invalidInptMsg" id="fnameError" style="display: hidden;"></div>
-    
-                    <label for="mname">Middle name</label><br>
-                    <input type="text" id="mname" name="mname" placeholder="Optional"><br>
-                    <div class="invalidInptMsg" id="mnameError" style="display: hidden;"></div>
-    
-                    <label for="lname">Last name</label><br>
-                    <input type="text" id="lname" name="lname" required="required"><br>
-                    <div class="invalidInptMsg" id="lnameError" style="display: hidden;"></div>
+                <div id="formDiv">
+                    <h2>Add a New Patient</h2>
+                    <form name="patientForm" id="patientFieldsContainer">
+                        <label for="fname">First name</label><br>
+                        <input type="text" id="fname" name="fname" required="required"><br>
+                        <div class="invalidInptMsg" id="fnameError" style="display: hidden;"></div>
+        
+                        <label for="mname">Middle name</label><br>
+                        <input type="text" id="mname" name="mname" placeholder="Optional"><br>
+                        <div class="invalidInptMsg" id="mnameError" style="display: hidden;"></div>
+        
+                        <label for="lname">Last name</label><br>
+                        <input type="text" id="lname" name="lname" required="required"><br>
+                        <div class="invalidInptMsg" id="lnameError" style="display: hidden;"></div>
 
-                    <label for="healthNum">Health Number</label><br>
-                    <input type="text" id="healthNum" name="healthNum" required="required" ><br>
-                    <div class="invalidInptMsg" id="hnumError" style="display: hidden;"></div>
+                        <label for="healthNum">Health Number</label><br>
+                        <input type="text" id="healthNum" name="healthNum" required="required" ><br>
+                        <div class="invalidInptMsg" id="hnumError" style="display: hidden;"></div>
 
-                    <label for="birthdate">Birthdate</label><br>
-                    <input type="date" id="birthdate" name="birthdate" required="required" onkeydown="return false"><br>
-                    <div class="invalidInptMsg" id="bdateError" style="display: hidden;"></div>
-                    
-                    <input id="startRecordingBtn" type="submit" value="Start Recording" disabled>
-                </form>
+                        <label for="birthdate">Birthdate</label><br>
+                        <input type="date" id="birthdate" name="birthdate" required="required" onkeydown="return false"><br>
+                        <div class="invalidInptMsg" id="bdateError" style="display: hidden;"></div>
+
+                        <button id="addMoreInfoButton">Additional Information</button>
+
+                        <div id="additionalInfoDiv">
+                            <label for="ecmoReason">Reason for ECMO</label><br>
+                            <input type="text" id="ecmoReason" class="additionalInput" name="ecmoReason" placeholder="Optional"><br>
+                            <div class="invalidInptMsg" id="ecmoReasonError" style="display: hidden;"></div>
+
+                            <label for="accuteSituation">Accute Situation</label><br>
+                            <input type="text" id="accuteSituation" class="additionalInput" name="accuteSituation" placeholder="Optional"><br>
+                            <div class="invalidInptMsg" id="accuteSituationError" style="display: hidden;"></div>
+
+                            <label for="riskFactors">Risk Factors</label><br>
+                            <input type="text" id="riskFactors" class="additionalInput" name="riskFactors" placeholder="Optional"><br>
+                            <div class="invalidInptMsg" id="riskFactorsError" style="display: hidden;"></div>
+                        </div>
+
+                        <input id="startRecordingBtn" type="submit" value="Start Recording" disabled>
+                    </form>
+                </div>
             </div>
         </div>
         <div id="recordingDiv">
