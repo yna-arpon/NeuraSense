@@ -132,9 +132,12 @@ async function deleteRecordFromDB(event: IpcMainEvent, recordID: number) {
 }
 
 // ------------------------------- RECORDING PAGE FUNCTIONALITY -------------------------------
+// name: string, healthNum: number, birthdate: string,
+//     ecmoReason: string, acuteSituation: string, riskFactors: string
 
 // Add patient to database after user fills out form 
-ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: number, birthdate: string}) => {
+ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: number, birthdate: string, 
+    ecmoReason: string, acuteSituation: string, riskFactors: string}) => {
     // Add patient to database
     addPatientToDB(event, formEntries)
         .then(async () => {
@@ -149,7 +152,9 @@ ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: 
         })
 })
 
-async function addPatientToDB(event: IpcMainEvent, formEntries: { name: string, healthNum: number, birthdate: string}) {
+async function addPatientToDB(event: IpcMainEvent, 
+    formEntries: { name: string, healthNum: number, birthdate: string, 
+        ecmoReason: string, acuteSituation: string, riskFactors: string}) {
     try {
         await databaseManager.addPatientRecord(formEntries);
     } catch (error) {

@@ -113,14 +113,16 @@ export class DatabaseManager {
       });
     }
     
-    addPatientRecord(patientData: { name: string, healthNum: number, birthdate: string}) {
-      return new Promise<void>((resolve, reject) => {
+    addPatientRecord(patientData: { name: string, healthNum: number, birthdate: string,
+      ecmoReason: string, acuteSituation: string, riskFactors: string}) {
+      
+        return new Promise<void>((resolve, reject) => {
         try {
           const addPatient = db.prepare(`
-            INSERT OR IGNORE INTO Patient (healthNumber, patientName, birthdate) VALUES (?, ?, ?)
+            INSERT OR IGNORE INTO Patient (healthNumber, patientName, birthdate, ecmoReason, acuteSituation, riskFactors) VALUES (?, ?, ?, ?, ?, ?)
           `)
           // Add Patients
-          addPatient.run(patientData.healthNum, patientData.name, patientData.birthdate);
+          addPatient.run(patientData.healthNum, patientData.name, patientData.birthdate, patientData.ecmoReason, patientData.acuteSituation, patientData.riskFactors);
           resolve()
         } catch (error) {
           console.error("[DB MANAGER]: Unable to add patient", error);

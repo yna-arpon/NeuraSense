@@ -65,6 +65,12 @@ export class RecordingPage extends BasePage {
 
             const healthNum: { inputID: string, errorID: string} = { inputID: "healthNum", errorID: "hnumError" };
 
+            const additionalInfo: { inputID: string, errorID: string }[] = [
+                {inputID: "ecmoReason", errorID: "ecmoReasonError"},
+                {inputID: "acuteSituation", errorID: "acuteSituationError"},
+                {inputID: "riskFactors", errorID: "riskFactorsError"}
+            ]
+
             const validForm = this.handleSubmission(nameFields, healthNum);
 
             if (!validForm) {
@@ -86,10 +92,24 @@ export class RecordingPage extends BasePage {
                 const bdateInput = document.getElementById("birthdate") as HTMLInputElement;
                 const bdate = bdateInput.value
 
-                const formFields: { name: string, healthNum: number, birthdate: string} = {
+                const ecmoReasonInput = document.getElementById(additionalInfo[0].inputID) as HTMLInputElement;
+                const ecmoReason = ecmoReasonInput.value.trim();
+
+                const acuteSituationInput = document.getElementById(additionalInfo[1].inputID) as HTMLInputElement;
+                const acuteSituation = acuteSituationInput.value.trim();
+
+                const riskFactorsInput = document.getElementById(additionalInfo[2].inputID) as HTMLInputElement;
+                const riskFactors = riskFactorsInput.value.trim();
+
+                const formFields: { name: string, healthNum: number, birthdate: string,
+                    ecmoReason: string, acuteSituation: string, riskFactors: string
+                } = {
                     name: `${fName} ${mname} ${lname}`,
                     healthNum: healthNumVal,
-                    birthdate: bdate
+                    birthdate: bdate, 
+                    ecmoReason: ecmoReason,
+                    acuteSituation: acuteSituation,
+                    riskFactors: riskFactors
                 }
 
                 ipcRenderer.send("submitPatientForm", formFields);
