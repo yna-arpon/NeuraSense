@@ -17,7 +17,8 @@ export class DatabaseManager {
               birthdate DATE NOT NULL,
               ecmoReason TEXT,
               acuteSituation TEXT,
-              riskFactors TEXT
+              riskFactors TEXT,
+              medications TEXT
             );
           
             CREATE TABLE IF NOT EXISTS Recording (
@@ -35,7 +36,7 @@ export class DatabaseManager {
     // Generate sample data for testing 
     insertSampleData() {
         const insertPatient = db.prepare(`
-          INSERT OR IGNORE INTO Patient (healthNumber, patientName, birthdate, ecmoReason, acuteSituation, riskFactors) VALUES (?, ?, ?, ?, ?, ?)
+          INSERT OR IGNORE INTO Patient (healthNumber, patientName, birthdate, ecmoReason, acuteSituation, riskFactors, medications) VALUES (?, ?, ?, ?, ?, ?, ?)
         `);
       
         const insertRecording = db.prepare(`
@@ -44,8 +45,8 @@ export class DatabaseManager {
         `);
       
         // Add Patients
-        insertPatient.run(1234, 'John Doe', '2015-06-15','Heart Disease','Severe','Weak immune system');
-        insertPatient.run(5678, 'Jane Smith', '2012-11-25','Lung Disease','Acute','Very weak immune system');
+        insertPatient.run(1234, 'John Doe', '2015-06-15','Heart Disease','Severe','Weak immune system', 'None');
+        insertPatient.run(5678, 'Jane Smith', '2012-11-25','Lung Disease','Acute','Very weak immune system', 'None');
       
         // Add Recordings
         insertRecording.run(1234, '2023-01-01 10:00:00', '2023-01-15 12:00:00');
@@ -114,15 +115,15 @@ export class DatabaseManager {
     }
     
     addPatientRecord(patientData: { name: string, healthNum: number, birthdate: string,
-      ecmoReason: string, acuteSituation: string, riskFactors: string}) {
+      ecmoReason: string, acuteSituation: string, riskFactors: string, medications: string}) {
       
         return new Promise<void>((resolve, reject) => {
         try {
           const addPatient = db.prepare(`
-            INSERT OR IGNORE INTO Patient (healthNumber, patientName, birthdate, ecmoReason, acuteSituation, riskFactors) VALUES (?, ?, ?, ?, ?, ?)
+            INSERT OR IGNORE INTO Patient (healthNumber, patientName, birthdate, ecmoReason, acuteSituation, riskFactors, medications) VALUES (?, ?, ?, ?, ?, ?, ?)
           `)
           // Add Patients
-          addPatient.run(patientData.healthNum, patientData.name, patientData.birthdate, patientData.ecmoReason, patientData.acuteSituation, patientData.riskFactors);
+          addPatient.run(patientData.healthNum, patientData.name, patientData.birthdate, patientData.ecmoReason, patientData.acuteSituation, patientData.riskFactors, patientData.medications);
           resolve()
         } catch (error) {
           console.error("[DB MANAGER]: Unable to add patient", error);

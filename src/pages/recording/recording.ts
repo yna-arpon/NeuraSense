@@ -68,7 +68,8 @@ export class RecordingPage extends BasePage {
             const additionalInfo: { inputID: string, errorID: string }[] = [
                 {inputID: "ecmoReason", errorID: "ecmoReasonError"},
                 {inputID: "acuteSituation", errorID: "acuteSituationError"},
-                {inputID: "riskFactors", errorID: "riskFactorsError"}
+                {inputID: "riskFactors", errorID: "riskFactorsError"},
+                {inputID: "medications", errorID: "medicationsError"}
             ]
 
             const validForm = this.handleSubmission(nameFields, healthNum);
@@ -100,6 +101,9 @@ export class RecordingPage extends BasePage {
 
                 const riskFactorsInput = document.getElementById(additionalInfo[2].inputID) as HTMLInputElement;
                 const riskFactors = riskFactorsInput.value.trim();
+
+                const medicationsInput = document.getElementById(additionalInfo[3].inputID) as HTMLInputElement;
+                const medications = medicationsInput.value.trim();
 
                 const formFields: { name: string, healthNum: number, birthdate: string,
                     ecmoReason: string, acuteSituation: string, riskFactors: string
