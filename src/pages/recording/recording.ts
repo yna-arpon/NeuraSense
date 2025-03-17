@@ -106,14 +106,15 @@ export class RecordingPage extends BasePage {
                 const medications = medicationsInput.value.trim();
 
                 const formFields: { name: string, healthNum: number, birthdate: string,
-                    ecmoReason: string, acuteSituation: string, riskFactors: string
+                    ecmoReason: string, acuteSituation: string, riskFactors: string, medications: string
                 } = {
                     name: `${fName} ${mname} ${lname}`,
                     healthNum: healthNumVal,
                     birthdate: bdate, 
                     ecmoReason: ecmoReason,
                     acuteSituation: acuteSituation,
-                    riskFactors: riskFactors
+                    riskFactors: riskFactors,
+                    medications: medications
                 }
 
                 ipcRenderer.send("submitPatientForm", formFields);
