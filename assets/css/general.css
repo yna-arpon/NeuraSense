@@ -28,6 +28,18 @@ h3 {
     margin: 0;
 }
 
+h4 {
+    font-weight: bolder;
+    margin: 15px 0px;
+    font-size: 1.45rem;
+}
+
+h5 {
+    margin: 5px 15px 10px 0px;
+    font-size: 1.1rem;
+    font-weight: bolder;
+}
+
 p {
     margin: 0
 }

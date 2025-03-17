@@ -216,9 +216,35 @@ ipcRenderer.on("showRecordingPage", (event) => {
     })
 
     // Create EEG and fNIRS graphs
+    attachInfoListeners();
     createEGGraphs();
     createfNIRSGraphs();
 });
+
+function attachInfoListeners() {
+    const infoBtn = document.getElementById("infoBtn") as HTMLButtonElement;
+    const icon = infoBtn.querySelector("i") as HTMLElement;
+    const additionalInfoDiv = document.getElementById("additionalInfoPopUp") as HTMLDivElement;
+    const closeBtn = document.getElementById("closePopUp") as HTMLButtonElement;
+
+    infoBtn.addEventListener('click', () => {
+        additionalInfoDiv.style.display = "flex";
+        document.body.classList.add("modal-active"); 
+    })
+    
+    infoBtn.addEventListener('mouseover', () => {
+        icon.classList.replace("bi-info-circle", "bi-info-circle-fill"); // Filled info icon
+    })
+    
+    infoBtn.addEventListener('mouseout', () => {
+        icon.classList.replace("bi-info-circle-fill", "bi-info-circle"); // info icon
+    })
+    
+    closeBtn.addEventListener('click', () => {
+        additionalInfoDiv.style.display = "none";
+        document.body.classList.remove("modal-active")
+    })
+}
 
 function endSession() {
     navBarContainer.style.display = "flex"

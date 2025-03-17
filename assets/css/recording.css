@@ -351,7 +351,7 @@ border-radius: 2px;
     flex-direction: column;
     width: 100%;
     height: 90%;
-    overflow: scroll;
+    overflow-y: auto;
     align-items: center;
 }
 
@@ -363,4 +363,74 @@ border-radius: 2px;
     position: absolute;
     top: 5px;
     left: 5px;
+}
+
+#infoBtn {
+    background: none;
+    border: none;
+    font-size: 145%;
+    color: #C4396B;
+}
+
+#patientInfo {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#additionalInfoPopUp {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* When the popup is active, blur the main content */
+body.modal-active #recordingDiv {
+    filter: blur(5px);
+    pointer-events: none; /* Prevents interaction with the background */
+}
+
+#additionalInfoContent {
+    display: flex;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    width: 65%;
+    background: white;
+    height: 80%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 35px;
+}
+
+#popupPatientInfo {
+    display: flex;
+    flex-direction: column;
+    margin: 5%;
+    overflow-y: scroll;
+}
+
+#popupHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.patientInfoRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.clinicalInfoRow {
+    margin-bottom: 20px;
+}
+
+#closePopUp {
+    background: none;
+    border: none;
+    font-size: 1.75rem;
 }
