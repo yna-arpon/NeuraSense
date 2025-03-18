@@ -53,7 +53,7 @@ export class DatabaseManager {
         insertRecording.run(5678, '2023-01-16 14:30:00', '2023-02-27 16:30:00');
     }
 
-    // Get data 
+    // Get all data 
     getData(): Promise<{
         recordID: number;
         healthNumber: number;
@@ -91,6 +91,58 @@ export class DatabaseManager {
               eegFile: row.eegFile ? Buffer.from(row.eegFile).toString('base64') : null, // Convert BLOB to Base64
               fNIRSFile: row.fNIRSFile ? Buffer.from(row.fNIRSFile).toString('base64') : null, // Convert BLOB to Base64
           }));
+          resolve(preparedData);
+        } catch (error) {
+          console.error("[DATABASE MANAGER]: Failed to get data")
+          reject(error)
+        }
+      }) 
+    }
+
+    getPatientData(healthNumber: number): Promise<{
+      healthNumber: number;
+      patientName: string;
+      birthdate: string;
+      ecmoReason: string;
+      acuteSituation: string;
+      riskFactors: string;
+      medications: string;
+    }| null> {
+      return new Promise((resolve, reject) => {
+          try {
+            const stmt = db.prepare(`
+              SELECT 
+                healthNumber, 
+                patientName, 
+                birthdate,
+                ecmoReason, 
+                acuteSituation, 
+                riskFactors,
+                medications
+              FROM Patient
+              WHERE healthNumber = ?
+          `);
+
+          console.log("DB Manager:", healthNumber, typeof(healthNumber))
+          // Map the raw data to the desired format
+          const patientData: any = stmt.get(healthNumber);
+
+          console.log("Patient Data: ", patientData)
+
+          if (!patientData) {
+            resolve(null); // No patient found
+            return;
+          }
+          
+          const preparedData = {
+            healthNumber: patientData.healthNumber,
+            patientName: patientData.patientName,
+            birthdate: new Date(patientData.birthdate).toISOString(),
+            ecmoReason: patientData.ecmoReason,
+            acuteSituation: patientData.acuteSituation,
+            riskFactors: patientData.riskFactors,
+            medications: patientData.medications
+          }
           resolve(preparedData);
         } catch (error) {
           console.error("[DATABASE MANAGER]: Failed to get data")

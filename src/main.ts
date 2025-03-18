@@ -139,8 +139,9 @@ ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: 
     // Add patient to database
     addPatientToDB(event, formEntries)
         .then(async () => {
-            // Hide Form and show recording page
-            event.sender.send("showRecordingPage")
+            console.log("Renderer:",formEntries.healthNum, typeof(formEntries.healthNum))
+
+            showRecordingPage(event, formEntries);
 
             // Initialize connection to OpenBCI server
             setupUDPListener(mainWindow); // Start UDP listener
@@ -149,6 +150,21 @@ ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: 
             console.error(`[MAIN PROCESS]: Failed to add ${formEntries.name} to DB`)
         })
 })
+
+async function showRecordingPage(event: Electron.IpcMainEvent, 
+    formEntries: { name: string, healthNum: number, birthdate: string, 
+    ecmoReason: string, acuteSituation: string, riskFactors: string, medications: string}) {
+    
+    // Get patient data using .then()
+    databaseManager.getPatientData(formEntries.healthNum)
+        .then(patientData => {
+            // Hide form and show recording page
+            event.sender.send("showRecordingPage", patientData);
+        })
+        .catch(error => {
+            console.error("Error fetching patient data:", error);
+        });
+}
 
 async function addPatientToDB(event: IpcMainEvent, 
     formEntries: { name: string, healthNum: number, birthdate: string, 

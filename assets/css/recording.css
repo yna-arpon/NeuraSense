@@ -410,6 +410,7 @@ body.modal-active #recordingDiv {
     flex-direction: column;
     margin: 5%;
     overflow-y: scroll;
+    width: 100%;
 }
 
 #popupHeader {

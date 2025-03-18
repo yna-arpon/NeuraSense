@@ -189,7 +189,8 @@ function createCell(content: string): HTMLTableCellElement {
 // ------------------------------- RECORDING PAGE FUNCTIONALITY -------------------------------
 
 // Hide patient form and show recording page
-ipcRenderer.on("showRecordingPage", (event) => {
+ipcRenderer.on("showRecordingPage", (event, patientData: {patientName: string, healthNumber: number, birthdate: string, 
+    ecmoReason: string, acuteSituation: string, riskFactors: string, medications: string}) => {
     // Hide patient form
     const patientForm = document.getElementById("addPatientDiv") as HTMLDivElement;
     patientForm.style.display = "none"
@@ -197,6 +198,20 @@ ipcRenderer.on("showRecordingPage", (event) => {
     // Show recording page
     const recordingPage = document.getElementById("recordingDiv") as HTMLDivElement;
     recordingPage.style.display = "flex"
+
+    // Dynamically show patient data
+    showPatientData(patientData)
+
+    // Dynamically show todays date
+    const dateSection = document.getElementById("todayDate") as HTMLParagraphElement;
+    const today = new Date();
+    const formattedToday = new Intl.DateTimeFormat("en-US", { 
+        year: "numeric", 
+        month: "long", 
+        day: "numeric" 
+    }).format(today);
+    
+    dateSection.innerHTML = formattedToday
 
     // Hide nav bar - once we enter the recording page
     navBarContainer.style.display = "none"
@@ -220,6 +235,34 @@ ipcRenderer.on("showRecordingPage", (event) => {
     createEGGraphs();
     createfNIRSGraphs();
 });
+
+function showPatientData(patientData: {patientName: string, healthNumber: number, birthdate: string, 
+    ecmoReason: string, acuteSituation: string, riskFactors: string, medications: string}) {
+
+    const patientNames = Array.from(document.getElementsByClassName("patientName"));
+    const patientHealthNum = document.getElementById("patientHealthNumber") as HTMLParagraphElement;
+    const patientBirthdate = document.getElementById("patientBirthDate") as HTMLParagraphElement;
+    const patientEcmoReason = document.getElementById("patientEcmoReason") as HTMLParagraphElement;
+    const patientAcuteSituation = document.getElementById("patientAcuteSituation") as HTMLParagraphElement;
+    const patientRiskFactors = document.getElementById("patientRiskFactors") as HTMLParagraphElement;
+    const patientMedications = document.getElementById("patientMedications") as HTMLParagraphElement;
+    
+    console.log(patientData.patientName)
+
+    patientNames.forEach(heading => {
+        heading.innerHTML = patientData.patientName
+    })
+
+    const date = new Date(patientData.birthdate);
+    const formattedDate = date.toISOString().split("T")[0]; // Extract YYYY-MM-DD
+    patientBirthdate.innerHTML = formattedDate;
+
+    patientHealthNum.innerHTML = String(patientData.healthNumber)
+    patientEcmoReason.innerHTML = patientData.ecmoReason
+    patientAcuteSituation.innerHTML = patientData.acuteSituation
+    patientRiskFactors.innerHTML = patientData.riskFactors
+    patientMedications.innerHTML = patientData.medications
+}
 
 function attachInfoListeners() {
     const infoBtn = document.getElementById("infoBtn") as HTMLButtonElement;
