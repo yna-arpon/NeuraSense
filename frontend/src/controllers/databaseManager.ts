@@ -123,11 +123,8 @@ export class DatabaseManager {
               WHERE healthNumber = ?
           `);
 
-          console.log("DB Manager:", healthNumber, typeof(healthNumber))
           // Map the raw data to the desired format
           const patientData: any = stmt.get(healthNumber);
-
-          console.log("Patient Data: ", patientData)
 
           if (!patientData) {
             resolve(null); // No patient found

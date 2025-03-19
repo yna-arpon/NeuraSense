@@ -246,8 +246,6 @@ function showPatientData(patientData: {patientName: string, healthNumber: number
     const patientAcuteSituation = document.getElementById("patientAcuteSituation") as HTMLParagraphElement;
     const patientRiskFactors = document.getElementById("patientRiskFactors") as HTMLParagraphElement;
     const patientMedications = document.getElementById("patientMedications") as HTMLParagraphElement;
-    
-    console.log(patientData.patientName)
 
     patientNames.forEach(heading => {
         heading.innerHTML = patientData.patientName

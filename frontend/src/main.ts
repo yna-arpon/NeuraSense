@@ -3,6 +3,8 @@ import path from "path";
 import { DatabaseManager } from "./controllers/databaseManager";
 import { eventNames } from "process";
 import { setupUDPListener } from "./eegListener";
+import { BackendManager } from "./controllers/backendManager";
+import { connect } from "http2";
 
 const isDev = process.env.NODE_ENV !== "production"
 const isMac = process.platform === 'darwin';
@@ -22,7 +24,8 @@ if (isMac) {
 
 let mainWindow : BrowserWindow;
 
-const databaseManager = new DatabaseManager()
+const databaseManager = new DatabaseManager();
+const backendManager = new BackendManager();
 
 let currentPage: string = "home" // Initialize current page state
 let lastPage: string
@@ -54,7 +57,7 @@ function createWindows(): void {
     }
 
     mainWindow.loadFile(path.join(__dirname, "./index.html"));
-    mainWindow.on("ready-to-show", () => mainWindow.show())
+    mainWindow.on("ready-to-show", () => mainWindow.show());
 }
 
 // ------------------------------- NAVIGATION FUNCTIONALITY -------------------------------
@@ -139,14 +142,16 @@ ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: 
     // Add patient to database
     addPatientToDB(event, formEntries)
         .then(async () => {
-            console.log("Renderer:",formEntries.healthNum, typeof(formEntries.healthNum))
 
             showRecordingPage(event, formEntries);
 
             // Initialize connection to OpenBCI server
-            setupUDPListener(mainWindow); // Start UDP listener
+            setupUDPListener(mainWindow);
+
+            connectToWS(formEntries.name);
         })
         .catch((error) => {
+            console.log(error)
             console.error(`[MAIN PROCESS]: Failed to add ${formEntries.name} to DB`)
         })
 })
@@ -176,9 +181,17 @@ async function addPatientToDB(event: IpcMainEvent,
     }
 }
 
+async function connectToWS(name: string) {
+    await backendManager.connectWS()
+    backendManager.sendData(name)
+}
+
 // Recieved EEG Data
 ipcMain.on('eegDataRecieved', (event, eegData) => {
+    // Send EEG data to be displayed on recoridng page
     mainWindow.webContents.send('displayEEGData', eegData);
+
+    // Send EEG data to sever for processing
 })
 
 // End recording session 
