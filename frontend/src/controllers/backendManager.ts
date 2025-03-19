@@ -1,3 +1,4 @@
+import { ipcMain } from "electron";
 import { WebSocket } from "ws";
 
 export class BackendManager {
@@ -9,7 +10,6 @@ export class BackendManager {
     }
 
     // Connect to ws
-
     async connectWS() {
         return new Promise<void>((resolve, reject) => {
             this.ws = new WebSocket(this.url);
@@ -19,32 +19,18 @@ export class BackendManager {
                 resolve();  // Resolve the promise when the connection is open
             };
 
+            this.ws.onmessage = (event) => {
+                console.log("[Backend Manager]: Message Received from server:", event.data);
+                console.log(event.data)
+                ipcMain.emit("serverDataRecieved", {} as Event, event.data)
+            };
+
             this.ws.onerror = (error) => {
                 console.error("[Backend Manager]: WebSocket Error:", error);
                 reject(error);  // Reject the promise on error
             };
         });
     }
-    
-    // async connectWS() {
-    //     this.ws = new WebSocket(this.url);
-
-    //     this.ws.onopen = () => {
-    //         console.log("[Backend Manager]: Connected to WebSocket server");
-    //         return 1
-    //     };
-
-    //     this.ws.onmessage = (event) => {
-    //         console.log("[Backend Manager]: Message Received from server:", event.data);
-    //     };
-
-    //     this.ws.onclose = () => {
-    //         console.log("[Backend Manager]: WebSocket Disconnected");
-    //     };
-
-    //     this.ws.onerror = (error) => {
-    //         console.error("[Backend Manager]: WebSocket Error:", error);
-    //     };
     // }
 
     // Send data to ws
@@ -66,5 +52,4 @@ export class BackendManager {
             console.log("WebSocket connection closed");
         }
     }
-
 }
