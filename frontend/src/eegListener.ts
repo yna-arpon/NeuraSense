@@ -1,17 +1,21 @@
 import { BrowserWindow, ipcMain } from "electron";
 import * as dgram from "dgram";
+import { Console } from "console";
 
 // Port and IP address defined by OpenBCI GUI
 const PORT = 12345;
 const HOST = "127.0.0.1"
 
+let server: dgram.Socket | null
+
+
 export const setupUDPListener = (mainWindow: BrowserWindow) => {
     // Create UDP server
-    const server = dgram.createSocket('udp4');
+    server = dgram.createSocket('udp4');
 
     server.on('listening', () => {
-        const address = server.address();
-        console.log(`[EEG LISTENER]: UDP Server listening on: ${address.address}:${address.port}`)
+        const address = server?.address();
+        console.log(`[EEG LISTENER]: UDP Server listening on: ${address?.address}:${address?.port}`)
     });
 
     server.on('message', (data) => {
@@ -29,4 +33,17 @@ export const setupUDPListener = (mainWindow: BrowserWindow) => {
     })
 
     server.bind(PORT, HOST)
+}
+
+export const disconnectUDP = () => {
+    console.log("entered disconnectUDP")
+    if (server) {
+        console.log("Trying to disconnect")
+        server.close(() => {
+            console.log("[EEG LISTENER]: UDP Server disconnected.");
+        });
+        server = null;
+    } else {
+        console.log("[EEG Listener]: No active UDP server to disconnect.")
+    }
 }

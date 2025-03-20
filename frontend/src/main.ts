@@ -2,7 +2,7 @@ import { app, ipcMain, BrowserWindow, shell, screen, dialog, IpcMainEvent } from
 import path from "path";
 import { DatabaseManager } from "./controllers/databaseManager";
 import { eventNames } from "process";
-import { setupUDPListener } from "./eegListener";
+import { setupUDPListener, disconnectUDP } from "./eegListener";
 import { BackendManager } from "./controllers/backendManager";
 import { connect } from "http2";
 
@@ -200,7 +200,9 @@ ipcMain.on('serverDataRecieved', (event, processedData) => {
 
 // End recording session 
 ipcMain.on("endRecordingSession", (event) => {
-    event.sender.send("home");
+    console.log("entered endRecordingSession")
+    disconnectUDP();
+    // event.sender.send("home");
 })
 
 ipcMain.handle("confirmEndSession", async () => {
