@@ -45,12 +45,10 @@ export class DatabaseManager {
         `);
       
         // Add Patients
-        insertPatient.run(1234, 'John Doe', '2015-06-15','Heart Disease','Severe','Weak immune system', 'None');
-        insertPatient.run(5678, 'Jane Smith', '2012-11-25','Lung Disease','Acute','Very weak immune system', 'None');
+        insertPatient.run(1234, 'Jane Doe Smith', '2025-03-17','-','-','-', '-');
       
         // Add Recordings
-        insertRecording.run(1234, '2023-01-01 10:00:00', '2023-01-15 12:00:00');
-        insertRecording.run(5678, '2023-01-16 14:30:00', '2023-02-27 16:30:00');
+        insertRecording.run(1234, '2024-03-19 10:00:00', '2023-03-19 12:00:00');
     }
 
     // Get all data 

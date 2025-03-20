@@ -148,7 +148,7 @@ ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: 
             // Initialize connection to OpenBCI server
             setupUDPListener(mainWindow);
 
-            connectToWS(formEntries.name);
+            // connectToWS(formEntries.name);
         })
         .catch((error) => {
             console.log(error)

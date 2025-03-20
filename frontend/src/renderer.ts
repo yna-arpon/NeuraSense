@@ -366,8 +366,8 @@ function createGraph(canvasId: string, borderColor: string) {
           x: { grid: { display: false } },
           y: { 
             grid: { display: false },
-            max: 800,
-            min: -800
+            max: 2500,
+            min: -2500
         },
         },
         plugins: {
