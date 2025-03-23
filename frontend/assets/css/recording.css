@@ -237,20 +237,66 @@ border-radius: 2px;
     width: 70%;
 }
 
-.flagDiv {
-    width: 93%;
-    height: 45%;
-    flex-direction: column;
-    align-items: normal;
-    justify-content: flex-start;
-}
-
 #flagsContainer {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     row-gap: 15px;
+}
+
+.flagCategoryHeader {
+    color: #C4396B;
+    font-size: 1rem;
+    margin-bottom: 2%;
+}
+
+#topEegMeasures {
+    display: flex;
+    flex-direction: column;
+    width: 92%;
+    margin: 20px;
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.asymmetryTable {
+    width: 50%;
+}
+
+.measureCategory {
+    background: white;
+    border-radius: 11px;
+}
+
+#bottomEegMeasures {
+    display: flex;
+    flex-direction: row;
+    width: 94%;
+    column-gap: 15px;
+}
+
+.bottomEegMeasure {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 3% 0% 3% 4%;
+}
+
+.tableHeading {
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+.tableRow {
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+
+.tableContainer {
+    display: flex;
+    width: 85%;
+    justify-content: space-between;
 }
 
 .flagRowLabel {
@@ -269,6 +315,8 @@ border-radius: 2px;
     color: #827f7f;;
     height: 80%;
 }
+
+
 
 #endContainer {
     display: flex;

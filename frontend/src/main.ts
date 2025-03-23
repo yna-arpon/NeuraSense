@@ -194,8 +194,10 @@ ipcMain.on('eegDataRecieved', (event, eegData) => {
     // Send EEG data to sever for processing
 })
 
-ipcMain.on('serverDataRecieved', (event, processedData) => {
+ipcMain.on('processedDataRecieved', (event, processedData) => {
     console.log("Recieved Processed Data: ", processedData)
+
+    // Send to renderer
 })
 
 // End recording session 

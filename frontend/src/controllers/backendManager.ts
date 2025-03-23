@@ -20,9 +20,9 @@ export class BackendManager {
             };
 
             this.ws.onmessage = (event) => {
-                console.log("[Backend Manager]: Message Received from server:", event.data);
+                console.log("[Backend Manager]: Message Received from socket:", event.data);
                 console.log(event.data)
-                ipcMain.emit("serverDataRecieved", {} as Event, event.data)
+                ipcMain.emit("processedDataRecieved", {} as Event, event.data)
             };
 
             this.ws.onerror = (error) => {

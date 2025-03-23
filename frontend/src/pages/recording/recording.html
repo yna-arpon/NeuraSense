@@ -139,13 +139,65 @@
                 <div id="rightContent" class="recordingContainers">
                     <h3 class="recordingHeadings">Stroke Flags</h3>
                     <div id="flagsContainer" class="chartsContainer">
-                        <div id="eegFlags" class="graphContainer flagDiv">
-                            <div class="flagRowLabel">EEG Flags</div>
-                            <div class="flagGraph">No EEG Flags</div>
+                        <div id="topEegMeasures" class="measureCategory">
+                            <h2 class="flagCategoryHeader">Asymmetry Measures</h2>
+                            <div class="tableContainer">
+                                <table class="asymmetryTable">
+                                    <tr>
+                                        <th colspan="2" class="tableHeading">Relative Difference</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="tableRow">Alpha</td>
+                                        <td id="alphaRD">0.04</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tableRow">Beta</td>
+                                        <td id="betaRD">0.5</td>
+                                    </tr>
+                                </table>
+                            
+                                <table class="asymmetryTable">
+                                    <tr>
+                                        <th colspan="2" class="tableHeading">Hemispheric Index</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="tableRow">Alpha</td>
+                                        <td id="alphaHI">0.04</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tableRow">Beta</td>
+                                        <td id="betaHI">0.5</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
-                        <div id="fNIRSFlags" class="graphContainer flagDiv">
-                            <div class="flagRowLabel">fNIRS Flags</div>
-                            <div class="flagGraph">No fNIRS Flags</div>
+                        <div id="bottomEegMeasures">
+                            <div class="measureCategory bottomEegMeasure">
+                                <h2 class="flagCategoryHeader">Relative Band Power</h2>
+                                <table>
+                                    <tr>
+                                        <td class="tableRow">Alpha</td>
+                                        <td id="alphaRBP">0.04</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tableRow">Beta</td>
+                                        <td id="betaRBP">0.5</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="measureCategory bottomEegMeasure">
+                                <h2 class="flagCategoryHeader">Ratios</h2>
+                                <table>
+                                    <tr>
+                                        <td class="tableRow">Alpha</td>
+                                        <td id="dar">0.04</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tableRow">Beta</td>
+                                        <td id="dbr">0.5</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div id="endContainer">
