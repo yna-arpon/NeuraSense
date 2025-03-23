@@ -26,6 +26,8 @@ export const setupUDPListener = (mainWindow: BrowserWindow) => {
             // Parse the string into JSON
             const message = JSON.parse(dataString);
 
+            console.log(message)
+
             ipcMain.emit('eegDataRecieved', {} as Event, message);
         } catch(error) {
             console.error('Error parsing message', error)
