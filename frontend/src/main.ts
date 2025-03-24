@@ -5,6 +5,7 @@ import { eventNames } from "process";
 import { setupUDPListener, disconnectUDP } from "./eegListener";
 import { BackendManager } from "./controllers/backendManager";
 import { connect } from "http2";
+import { start } from "repl";
 
 const isDev = process.env.NODE_ENV !== "production"
 const isMac = process.platform === 'darwin';
@@ -77,6 +78,7 @@ ipcMain.on("launchHelp", () => {
 
 // Listen for request to display history page
 ipcMain.on("prepareTable", async (event) => {
+
     // Prepare data
     const data = await databaseManager.getData();
 
@@ -139,6 +141,7 @@ async function deleteRecordFromDB(event: IpcMainEvent, recordID: number) {
 // Add patient to database after user fills out form 
 ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: number, birthdate: string, 
     ecmoReason: string, acuteSituation: string, riskFactors: string, medications: string}) => {
+
     // Add patient to database
     addPatientToDB(event, formEntries)
         .then(async () => {
@@ -148,7 +151,8 @@ ipcMain.on("submitPatientForm", (event, formEntries: { name: string, healthNum: 
             // Initialize connection to OpenBCI server
             setupUDPListener(mainWindow);
 
-            // connectToWS(formEntries.name);
+            // Connect to websocket
+            connectToWS();
         })
         .catch((error) => {
             console.log(error)
@@ -181,30 +185,43 @@ async function addPatientToDB(event: IpcMainEvent,
     }
 }
 
-async function connectToWS(name: string) {
+async function connectToWS() {
     await backendManager.connectWS()
-    backendManager.sendData(name)
+}
+
+async function sendEEGData(data: any) {
+    try {
+        const jsonData = JSON.stringify(data); // Convert object to JSON string
+        backendManager.sendData(jsonData); 
+    } catch (error) {
+        console.error("Error serializing EEG data:", error);
+    }
 }
 
 // Recieved EEG Data
-ipcMain.on('eegDataRecieved', (event, eegData) => {
+ipcMain.on('eegDataRecieved', async (event, eegData) => {
     // Send EEG data to be displayed on recoridng page
     mainWindow.webContents.send('displayEEGData', eegData);
 
     // Send EEG data to sever for processing
+    await sendEEGData(eegData)
 })
 
-ipcMain.on('processedDataRecieved', (event, processedData) => {
-    console.log("Recieved Processed Data: ", processedData)
 
-    // Send to renderer
+ipcMain.on('processedDataRecieved', (event, processedData) => {
+    console.log("Received Processed Data:", processedData);
+    const data = JSON.parse(processedData);  // Safely parse the JSON string
+    if (mainWindow) {
+        console.log("Sending Data to Renderer:", data);
+        mainWindow.webContents.send("updateStrokeMeasures", data);
+    }
 })
 
 // End recording session 
 ipcMain.on("endRecordingSession", (event) => {
     console.log("entered endRecordingSession")
     disconnectUDP();
-    // event.sender.send("home");
+    backendManager.disconnectWS()
 })
 
 ipcMain.handle("confirmEndSession", async () => {

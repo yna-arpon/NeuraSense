@@ -3,6 +3,7 @@ import { ipcRenderer } from "electron";
 import { NavBar } from "./components/navbar";
 import { PageManager } from "./controllers/pageManager";
 import { Chart, registerables } from "chart.js";
+import { start } from "repl";
 
 const navBarContainer = document.getElementById("navBarDiv") as HTMLDivElement;
 const pageContentsDiv = document.getElementById("pageContents") as HTMLDivElement;
@@ -476,3 +477,9 @@ function updateGraphs() {
         chart.update();
     });
 }
+
+ipcRenderer.on('updateStrokeMeasures', (event, strokeMeasures) => {
+    console.log("Received Processed Data in Renderer:", strokeMeasures);
+    
+    
+});

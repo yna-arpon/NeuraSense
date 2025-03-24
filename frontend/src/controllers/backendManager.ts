@@ -20,9 +20,8 @@ export class BackendManager {
             };
 
             this.ws.onmessage = (event) => {
-                console.log("[Backend Manager]: Message Received from socket:", event.data);
                 console.log(event.data)
-                ipcMain.emit("processedDataRecieved", {} as Event, event.data)
+                ipcMain.emit("processedDataRecieved", {}, event.data)
             };
 
             this.ws.onerror = (error) => {
@@ -31,14 +30,11 @@ export class BackendManager {
             };
         });
     }
-    // }
 
     // Send data to ws
     sendData(data: any) {
-        console.log("Trying to send data")
         if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-            this.ws.send(data);
-            console.log("Sent:", data);
+            this.ws.send(JSON.stringify(data));
         } else {
             console.warn("WebSocket is not connected. Call connectWS() first.");
         }
