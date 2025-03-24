@@ -19,6 +19,18 @@ interface EEGData {
     ch4?: number[],
 }
 
+interface StrokeMeasures {
+    DAR: number,
+    DBR: number,
+    RBP_Alpha: number,
+    RBP_Beta: number,
+    RD_Alpha: number,
+    RD_Beta: number,
+    HI_Alpha: number,
+    HI_Beta: number,
+    stroke: number
+}
+
 // ------------------------------- NAVIGATION FUNCTIONALITY -------------------------------
 // Append the navigation bar once
 const navBar = new NavBar();
@@ -478,8 +490,26 @@ function updateGraphs() {
     });
 }
 
-ipcRenderer.on('updateStrokeMeasures', (event, strokeMeasures) => {
+ipcRenderer.on('updateStrokeMeasures', (event, strokeMeasures: StrokeMeasures) => {
     console.log("Received Processed Data in Renderer:", strokeMeasures);
-    
-    
+
+    // Ensure TypeScript recognizes the structure
+    const measures = strokeMeasures as StrokeMeasures;
+
+    // Update the UI
+    updateElement("alphaRD", measures.RD_Alpha);
+    updateElement("betaRD", measures.RD_Beta);
+    updateElement("alphaHI", measures.HI_Alpha);
+    updateElement("betaHI", measures.HI_Beta);
+    updateElement("alphaRBP", measures.RBP_Alpha);
+    updateElement("betaRBP", measures.RBP_Beta);
+    updateElement("dar", measures.DAR);
+    updateElement("dbr", measures.DBR);
 });
+
+function updateElement(id: string, value: number | string) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.textContent = value.toString();
+    }
+}
