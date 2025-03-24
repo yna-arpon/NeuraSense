@@ -32,7 +32,7 @@
 }
 
 .subBtns {
-    width: 33%;
+    width: 50%;
     height: 40vh;
     border: none;
     border-radius: 15px;
@@ -42,13 +42,6 @@
     background: #E55D7D;
     &:hover {
         background: #d65674;;
-    }
-}
-
-#settingsPageBtn {
-    background: #C4396B;
-    &:hover {
-        background: #b53564;
     }
 }
 
@@ -109,10 +102,6 @@
 
 #historyIconHomePage {
     color: #E55D7D;
-}
-
-#settingsIconHomePage {
-    color: #C4396B;
 }
 
 #helpIconHomePage {

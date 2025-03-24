@@ -23,9 +23,6 @@ export class HomePage extends BasePage {
                     case "historyPageBtn":
                         page = "history";
                         break
-                    case "settingsPageBtn":
-                        page = "settings";
-                        break
                     case "helpPageBtn":
                         page = "help";
                         break

@@ -1,7 +1,6 @@
 import { HomePage } from "../pages/home/home";
 import { RecordingPage } from "../pages/recording/recording";
 import { HistoryPage } from "../pages/history/history";
-import { SettingsPage } from "../pages/settings/settings";
 import { BasePage } from "./basePage";
 
 type PageClass = new () => BasePage;
@@ -11,7 +10,6 @@ export class PageManager {
         home: HomePage,
         recording: RecordingPage,
         history: HistoryPage,
-        settings: SettingsPage
     };
 
     setupPage(pageName: string): void {
