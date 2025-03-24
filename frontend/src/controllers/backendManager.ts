@@ -20,7 +20,6 @@ export class BackendManager {
             };
 
             this.ws.onmessage = (event) => {
-                console.log(event.data)
                 ipcMain.emit("processedDataRecieved", {}, event.data)
             };
 

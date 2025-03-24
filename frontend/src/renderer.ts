@@ -491,8 +491,6 @@ function updateGraphs() {
 }
 
 ipcRenderer.on('updateStrokeMeasures', (event, strokeMeasures: StrokeMeasures) => {
-    console.log("Received Processed Data in Renderer:", strokeMeasures);
-
     // Ensure TypeScript recognizes the structure
     const measures = strokeMeasures as StrokeMeasures;
 

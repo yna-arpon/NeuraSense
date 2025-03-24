@@ -62,16 +62,6 @@ def collect_data(packet):
 
 def processing_data (data):
 
-    print(data)
-    
-    # raw_data = f"""{data}""" #This needs to be data from the queue
-
-    # # Extract individual JSON objects and create data array
-    # json_objects = re.findall(r'\{.*?\}', raw_data, re.DOTALL)
-
-    # # Make it a valid JSON
-    # json_objects = [obj.replace("'", '"').replace("type:", '"type":').replace("data:", '"data":') for obj in json_objects]
-
     # Parse into a list of dictionaries
     parsed_data = [json.loads(json.loads(s)) for s in data]
 

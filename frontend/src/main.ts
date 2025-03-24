@@ -209,7 +209,6 @@ ipcMain.on('eegDataRecieved', async (event, eegData) => {
 
 
 ipcMain.on('processedDataRecieved', (event, processedData) => {
-    console.log("Received Processed Data:", processedData);
     const data = JSON.parse(processedData);  // Safely parse the JSON string
     if (mainWindow) {
         console.log("Sending Data to Renderer:", data);

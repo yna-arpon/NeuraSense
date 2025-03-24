@@ -39,10 +39,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
             # Convert the dictionary to a JSON string
             processed_data_json = json.dumps(processed_data)
-
-            print(processed_data_json)
-
-            print("Sending data to websocket")
+            
             # Send back processed data
             await websocket.send_text(processed_data_json)  
            
