@@ -19,6 +19,7 @@ from queue import Queue
 # HELPER FUNCTIONS
 
 BUFFER_SIZE = 750 # 30s of frames at 200 Hz (Assuming 1 frame at 200 Hz) = 30 s x 200 Hz/s = 6000 frames 
+# BUFFER_SIZE = 100 # Testing buffer size
 data_queue = Queue(maxsize = BUFFER_SIZE) # Initialize Queue
 
 def collect_data(packet):
@@ -60,17 +61,19 @@ def collect_data(packet):
 
 
 def processing_data (data):
+
+    print(data)
     
-    raw_data = f"""{data}""" #This needs to be data from the queue
+    # raw_data = f"""{data}""" #This needs to be data from the queue
 
-    # Extract individual JSON objects and create data array
-    json_objects = re.findall(r'\{.*?\}', raw_data, re.DOTALL)
+    # # Extract individual JSON objects and create data array
+    # json_objects = re.findall(r'\{.*?\}', raw_data, re.DOTALL)
 
-    # Make it a valid JSON
-    json_objects = [obj.replace("'", '"').replace("type:", '"type":').replace("data:", '"data":') for obj in json_objects]
+    # # Make it a valid JSON
+    # json_objects = [obj.replace("'", '"').replace("type:", '"type":').replace("data:", '"data":') for obj in json_objects]
 
     # Parse into a list of dictionaries
-    parsed_data = [json.loads(obj) for obj in json_objects]
+    parsed_data = [json.loads(json.loads(s)) for s in data]
 
     num_channels = len(parsed_data[0]["data"])  # Assuming all JSONs have the same number of channels
     concatenated_data = [[] for _ in range(num_channels)]  # List of lists for each channel
@@ -108,17 +111,26 @@ def processing_data (data):
     odd = ['channel_1', 'channel_3']
     even = ['channel_2', 'channel_4']
 
-    relative_diff, hemispheric_index = asymmetry_metrics(odd = odd, even = even, data = raw_data)
+    relative_diff, hemispheric_index = asymmetry_metrics(odd = odd, even = even, data = raw_mne_data)
     
     # Arranging data into format required for application
-    DAR = band_ratios['DAR']
-    DBR = band_ratios['DBR']
-    RBP_Alpha = relative_band_power['Alpha']
-    RBP_Beta = relative_band_power['Beta']
-    RD_Alpha = relative_diff['Alpha']
-    RD_Beta = relative_diff['Beta']
-    HI_Alpha = hemispheric_index['Alpha']
-    HI_Beta = hemispheric_index['Beta']
+    # DAR = band_ratios['DAR']
+    # DBR = band_ratios['DBR']
+    # RBP_Alpha = relative_band_power['Alpha']
+    # RBP_Beta = relative_band_power['Beta']
+    # RD_Alpha = relative_diff['Alpha']
+    # RD_Beta = relative_diff['Beta']
+    # HI_Alpha = hemispheric_index['Alpha']
+    # HI_Beta = hemispheric_index['Beta']
+
+    DAR = round(band_ratios['DAR'], 2)
+    DBR = round(band_ratios['DBR'], 2)
+    RBP_Alpha = round(relative_band_power['Alpha'], 2)
+    RBP_Beta = round(relative_band_power['Beta'], 2)
+    RD_Alpha = round(relative_diff['Alpha'], 2)
+    RD_Beta = round(relative_diff['Beta'], 2)
+    HI_Alpha = round(hemispheric_index['Alpha'], 2)
+    HI_Beta = round(hemispheric_index['Beta'], 2)
 
     # Conduct stroke assessment with flag-based algorithm
     result = stroke_assessment(ratios = band_ratios, rbp = relative_band_power, rd = relative_diff, hi = hemispheric_index) 
@@ -350,9 +362,4 @@ def stroke_assessment(ratios, rbp, rd, hi):
             output += 1
         # print(flags, flags[i], output)
     
-    if output >= 3:
-        return ("Stroke Assessment: High")
-    else:
-        return ("Stroke Assessment: Low")
-
-
+    return 1 if output >= 3 else 0

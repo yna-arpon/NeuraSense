@@ -1,3 +1,4 @@
+import json
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 import asyncio
 from OpenBCI_Algorithm_Script import collect_data, processing_data
@@ -13,6 +14,7 @@ async def websocket_endpoint(websocket: WebSocket):
             data_chunk = None
             while not data_chunk:
                 data = await websocket.receive_text()  # Receive data from client
+                print("Recieved data")
                 
                 # waiting for queue to fill up
                 data_chunk = collect_data(data)
@@ -22,8 +24,27 @@ async def websocket_endpoint(websocket: WebSocket):
 
             print("Processed results:", DAR, DBR, RBP_Alpha, RBP_Beta, RD_Alpha, RD_Beta, HI_Alpha, HI_Beta, stroke)
 
+            # Create a dictionary with the processed data
+            processed_data = {
+                "DAR": DAR,
+                "DBR": DBR,
+                "RBP_Alpha": RBP_Alpha,
+                "RBP_Beta": RBP_Beta,
+                "RD_Alpha": RD_Alpha,
+                "RD_Beta": RD_Beta,
+                "HI_Alpha": HI_Alpha,
+                "HI_Beta": HI_Beta,
+                "stroke": stroke
+            }
+
+            # Convert the dictionary to a JSON string
+            processed_data_json = json.dumps(processed_data)
+
+            print(processed_data_json)
+
+            print("Sending data to websocket")
             # Send back processed data
-            await websocket.send_text(DAR, DBR, RBP_Alpha, RBP_Beta, RD_Alpha, RD_Beta, HI_Alpha, HI_Beta, stroke)  
+            await websocket.send_text(processed_data_json)  
            
     except WebSocketDisconnect:
         print("Client disconnected")
