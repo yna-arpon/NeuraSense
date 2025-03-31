@@ -237,7 +237,7 @@ ipcRenderer.on("showRecordingPage", (event, patientData: {patientName: string, h
     endSessionBtn.addEventListener('click', (event) => {
         ipcRenderer.invoke("confirmEndSession").then((result: Electron.MessageBoxReturnValue) => {
             if (result.response === 0) {
-                ipcRenderer.send("endRecordingSession");
+                ipcRenderer.send("endRecordingSession", patientData.healthNumber);
                 endSession();
             }
         })

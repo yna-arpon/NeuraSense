@@ -163,7 +163,6 @@ export class DatabaseManager {
     
     addPatientRecord(patientData: { name: string, healthNum: number, birthdate: string,
       ecmoReason: string, acuteSituation: string, riskFactors: string, medications: string}) {
-      
         return new Promise<void>((resolve, reject) => {
         try {
           const addPatient = db.prepare(`
@@ -178,6 +177,43 @@ export class DatabaseManager {
         }
       })
     }
+
+    addRecord(patientHealthNumber: number, ecmoStart: Date,
+            ecmoEnd: Date, eegFile?: Buffer | null, fNIRSFile?: Buffer | null) {
+      return new Promise<void>((resolve, reject) => {
+        try {
+          // Check if the patient exists
+          const patientExists = db
+            .prepare("SELECT COUNT(*) as count FROM Patient WHERE healthNumber = ?")
+            .get(patientHealthNumber);
+          
+          if (!patientExists) {
+            return reject(new Error("Patient not found in database."));
+          }
+    
+          // Insert the new recording
+          const stmt = db.prepare(`
+            INSERT INTO Recording 
+            (patientHealthNumber, ecmoStart, ecmoEnd, eegFile, fNIRSFile) 
+            VALUES (?, ?, ?, ?, ?)
+          `);
+    
+          const result = stmt.run(
+            patientHealthNumber,
+            ecmoStart.toISOString(),
+            ecmoEnd.toISOString(),
+            eegFile ?? null,
+            fNIRSFile ?? null
+          );
+    
+          resolve();
+        } catch (error) {
+          console.error("[DATABASE MANAGER]: Failed to add record", error);
+          reject(error);
+        }
+      });
+    }
+    
 
     clearDatabase(): void {
         try {

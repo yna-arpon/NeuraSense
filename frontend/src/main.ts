@@ -55,7 +55,7 @@ function createWindows(): void {
         mainWindow.webContents.openDevTools();
         
         // Insert sample data if dev env
-        databaseManager.insertSampleData()
+        // databaseManager.insertSampleData()
     }
 
     mainWindow.loadFile(path.join(__dirname, "./index.html"));
@@ -83,7 +83,7 @@ ipcMain.on("prepareTable", async (event) => {
     // Prepare data
     const data = await databaseManager.getData();
 
-    const preparedData = formatData(data)
+    const preparedData = formatData(data);
     
     event.sender.send("showHistoryTable", preparedData);
 });
@@ -228,8 +228,9 @@ ipcMain.on('processedDataRecieved', (event, processedData) => {
 })
 
 // End recording session 
-ipcMain.on("endRecordingSession", (event) => {
-    console.log("entered endRecordingSession")
+ipcMain.on("endRecordingSession", (event, healthNum: number) => {
+    console.log("Ending ECMO Recording")
+    databaseManager.addRecord(healthNum, new Date(), new Date())
     disconnectUDP();
     backendManager.disconnectWS()
 })
