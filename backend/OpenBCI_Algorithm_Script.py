@@ -18,8 +18,8 @@ from queue import Queue
 
 # HELPER FUNCTIONS
 
-BUFFER_SIZE = 750 # 30s of frames at 200 Hz (Assuming 1 frame at 200 Hz) = 30 s x 200 Hz/s = 6000 frames 
-# BUFFER_SIZE = 100 # Testing buffer size
+# BUFFER_SIZE = 750 # 30s of frames at 200 Hz (Assuming 1 frame at 200 Hz) = 30 s x 200 Hz/s = 6000 frames 
+BUFFER_SIZE = 100 # Testing buffer size
 data_queue = Queue(maxsize = BUFFER_SIZE) # Initialize Queue
 
 def collect_data(packet):
@@ -34,11 +34,12 @@ def collect_data(packet):
     - data_chunk: if Queue is full. This is an array with 6000 entries (30s of data) to serve as an input to the processing_data() method.
     - None: if Queue is not full
     """
+    packet = json.loads(packet)
+    state = packet['isPhantom']
 
-    # Dump out queue for processing if full
     if data_queue.full():
 
-        # Size should be BUFFER_SIZE
+            # Size should be BUFFER_SIZE
         size = data_queue.qsize() 
 
         # Initialize array to collect data chunk
@@ -52,24 +53,20 @@ def collect_data(packet):
         data_queue.queue.clear() 
 
         # Send data chunk for processing
-        return data_chunk
+        return data_chunk, state
 
     else:
         # Add packets to queue until it fills up
-        data_queue.put(packet)
-        return None # Return None so the application can send more data
+        data_queue.put(packet['packet'])
+        return None, None
 
+def processing_data (data, state):
 
-def processing_data (data):
-
-    # Parse into a list of dictionaries
-    parsed_data = [json.loads(json.loads(s)) for s in data]
-
-    num_channels = len(parsed_data[0]["data"])  # Assuming all JSONs have the same number of channels
+    num_channels = len(data[0]["data"])  # Assuming all JSONs have the same number of channels
     concatenated_data = [[] for _ in range(num_channels)]  # List of lists for each channel
 
     # Append corresponding channel samples from each JSON object
-    for entry in parsed_data:
+    for entry in data:
         for ch_idx in range(num_channels):
             concatenated_data[ch_idx].extend(entry["data"][ch_idx])  # Concatenate channel-wise data
 
@@ -98,34 +95,65 @@ def processing_data (data):
 
     # Compute asymmetry metrics
     # Define odd (left) and even (right) channels
-    odd = ['channel_1', 'channel_3']
-    even = ['channel_2', 'channel_4']
+    odd = ['channel_1', 'channel_2']
+    even = ['channel_3', 'channel_4']
 
     relative_diff, hemispheric_index = asymmetry_metrics(odd = odd, even = even, data = raw_mne_data)
-    
-    # Arranging data into format required for application
-    # DAR = band_ratios['DAR']
-    # DBR = band_ratios['DBR']
-    # RBP_Alpha = relative_band_power['Alpha']
-    # RBP_Beta = relative_band_power['Beta']
-    # RD_Alpha = relative_diff['Alpha']
-    # RD_Beta = relative_diff['Beta']
-    # HI_Alpha = hemispheric_index['Alpha']
-    # HI_Beta = hemispheric_index['Beta']
-
-    DAR = round(band_ratios['DAR'], 2)
-    DBR = round(band_ratios['DBR'], 2)
-    RBP_Alpha = round(relative_band_power['Alpha'], 2)
-    RBP_Beta = round(relative_band_power['Beta'], 2)
-    RD_Alpha = round(relative_diff['Alpha'], 2)
-    RD_Beta = round(relative_diff['Beta'], 2)
-    HI_Alpha = round(hemispheric_index['Alpha'], 2)
-    HI_Beta = round(hemispheric_index['Beta'], 2)
 
     # Conduct stroke assessment with flag-based algorithm
-    result = stroke_assessment(ratios = band_ratios, rbp = relative_band_power, rd = relative_diff, hi = hemispheric_index) 
-    
-    return DAR, DBR, RBP_Alpha, RBP_Beta, RD_Alpha, RD_Beta, HI_Alpha, HI_Beta, result
+    if state == True: 
+        result, flag_descriptions = stroke_assessment(ratios = band_ratios, rbp = relative_band_power, rd = relative_diff, hi = hemispheric_index)
+
+        processed_data = {
+            "DAR": round(band_ratios['DAR'], 2),
+            "DBR": round(band_ratios['DBR'], 2),
+            "RBP_Alpha": round(relative_band_power['Alpha'], 2),
+            "RBP_Beta": round(relative_band_power['Beta'], 2),
+            "RD_Alpha": round(relative_diff['Alpha'], 2),
+            "RD_Beta": round(relative_diff['Beta'], 2),
+            "HI_Alpha": round(hemispheric_index['Alpha'], 2),
+            "HI_Beta": round(hemispheric_index['Beta'], 2),
+            "stroke": result,
+            "ratio_flag": flag_descriptions[0],
+            "rbpb_flag": flag_descriptions[1],
+            "rbpa_flag": flag_descriptions[2],
+            "rda_flag": flag_descriptions[3],
+            "rdb_flag": flag_descriptions[4],
+            "hia_flag": flag_descriptions[5],
+            "hib_flag": flag_descriptions[6],
+        }
+    else:
+        processed_data = {
+            "DAR": round(band_ratios['DAR'], 2),
+            "DBR": round(band_ratios['DBR'], 2),
+            "RBP_Alpha": round(relative_band_power['Alpha'], 2),
+            "RBP_Beta": round(relative_band_power['Beta'], 2),
+            "RD_Alpha": round(relative_diff['Alpha'], 2),
+            "RD_Beta": round(relative_diff['Beta'], 2),
+            "HI_Alpha": round(hemispheric_index['Alpha'], 2),
+            "HI_Beta": round(hemispheric_index['Beta'], 2),
+            "stroke": 0,
+            "ratio_flag": "Normal",
+            "rbpb_flag": "Normal",
+            "rbpa_flag": "Normal",
+            "rda_flag": "Normal",
+            "rdb_flag": "Normal",
+            "hia_flag": "Normal",
+            "hib_flag": "Normal",
+        }
+
+        # result = 0 
+        # ratio_flag = "DAR & DBR are normal"
+        # rbpb_flag = "Relative band power (beta) is normal"
+        # rbpa_flag = "Relative band power (alpha) is normal"
+        # rda_flag = "Relative difference (alpha) is normal"
+        # rdb_flag = "Relative difference (beta) is normal"
+        # hia_flag = "Hemispheric index (alpha) is normal"
+        # hib_flag = "Hemispheric index (beta) is normal"
+
+    return processed_data
+
+    # return DAR, DBR, RBP_Alpha, RBP_Beta, RD_Alpha, RD_Beta, HI_Alpha, HI_Beta, result, ratio_flag, rbpb_flag, rbpa_flag, rda_flag, rdb_flag, hia_flag, hib_flag
 
 
 def find_psd(input_data, channels):
@@ -321,35 +349,76 @@ def stroke_assessment(ratios, rbp, rd, hi):
     # Initialize empty dict to store flag per metric
     keys = ["Ratios", "RBP Beta", "RBP Alpha", "Relative Diff Alpha", "Relative Diff Beta", "Hemispheric Index Alpha", "Hemispheric Index Beta"]
     flags = dict.fromkeys(keys)
+    flag_descriptions = []
 
 
     # Thresholds: Ratios
-    if (ratios['DAR'] > 10 and ratios['DBR'] > 25):
+    if (ratios['DAR'] > 9 and ratios['DBR'] > 22):
         flags["Ratios"] = 1 # EEG Flag = 1
+        ratio_desc = "DAR & DBR are abnormal"
+        flag_descriptions.append(ratio_desc)
+    else:
+        ratio_desc = "DAR & DBR are normal"
+        flag_descriptions.append(ratio_desc)
     
     # Thresholds: RBP
     if (rbp['Beta'] < 0.05):
         flags["RBP Beta"] = 1
+        rbpb_desc = "Relative band power (beta) is abnormal"
+        flag_descriptions.append(rbpb_desc)
+    else:
+        rbpb_desc = "Relative band power (beta) is normal"
+        flag_descriptions.append(rbpb_desc)    
     if (rbp['Alpha'] < 0.1):
         flags["RBP Alpha"] = 1
+        rbpa_desc = "Relative band power (alpha) is abnormal"
+        flag_descriptions.append(rbpa_desc)
+    else:
+        rbpa_desc = "Relative band power (alpha) is normal"
+        flag_descriptions.append(rbpa_desc)    
+        
     
      # Thresholds: Asymmetric Indices
-    if (rd['Alpha'] > 0.08):
+    if (rd['Alpha'] > 0.076):
         flags["Relative Diff Alpha"] = 1
-    if (rd['Beta'] > 0.125):
+        rda_desc = "Relative difference (alpha) is abnormal"
+        flag_descriptions.append(rda_desc)
+    else:
+        rda_desc = "Relative difference (alpha) is normal"
+        flag_descriptions.append(rda_desc)
+    if (rd['Beta'] > 0.12):
         flags["Relative Diff Beta"] = 1
+        rdb_desc = "Relative difference (beta) is abnormal"
+        flag_descriptions.append(rdb_desc)
+    else:
+        rdb_desc = "Relative difference (beta) is normal"
+        flag_descriptions.append(rdb_desc)
     
      # Thresholds: Hemispheric Index
     if (hi['Alpha'] < 1.05):
         flags["Hemispheric Index Alpha"] = 1
+        hia_desc = 'Hemispheric index (alpha) is abnormal'
+        flag_descriptions.append(hia_desc)
+    else:
+        hia_desc = 'Hemispheric index (alpha) is normal'
+        flag_descriptions.append(hia_desc)
     if (hi['Beta'] < 1):
         flags["Hemispheric Index Beta"] = 1
+        hib_desc = 'Hemispheric index (beta) is abnormal'
+        flag_descriptions.append(hib_desc)
+    else:
+        hib_desc = 'Hemispheric index (beta) is normal'
+        flag_descriptions.append(hib_desc)
     
     # Decision making
     output = 0
     for i in flags:
         if (flags[i] == 1):
             output += 1
-        # print(flags, flags[i], output)
     
-    return 1 if output >= 3 else 0
+    if output >= 4:
+        result = 1
+    else:
+        result = 0
+    
+    return result, flag_descriptions
