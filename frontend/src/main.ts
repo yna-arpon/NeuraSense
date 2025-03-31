@@ -28,8 +28,9 @@ let mainWindow : BrowserWindow;
 const databaseManager = new DatabaseManager();
 const backendManager = new BackendManager();
 
-let currentPage: string = "home" // Initialize current page state
-let lastPage: string
+let currentPage: string = "home"; // Initialize current page state
+let lastPage: string;
+let isSim: boolean = false;
 
 app.on("ready", createWindows);
 
@@ -189,14 +190,24 @@ async function connectToWS() {
     await backendManager.connectWS()
 }
 
-async function sendEEGData(data: any) {
+async function sendEEGData(eegData: any, isSim: boolean) {
+    const data = {
+        packet: eegData,
+        isPhantom: isSim
+    }
+
     try {
-        const jsonData = JSON.stringify(data); // Convert object to JSON string
-        backendManager.sendData(jsonData); 
+        // const jsonData = JSON.stringify(data); // Convert object to JSON string
+        backendManager.sendData(data); 
     } catch (error) {
         console.error("Error serializing EEG data:", error);
     }
 }
+
+ipcMain.on('toggleSimulation', (event, simVal) => {
+    // Change simulation state
+    isSim = simVal
+})
 
 // Recieved EEG Data
 ipcMain.on('eegDataRecieved', async (event, eegData) => {
@@ -204,7 +215,7 @@ ipcMain.on('eegDataRecieved', async (event, eegData) => {
     mainWindow.webContents.send('displayEEGData', eegData);
 
     // Send EEG data to sever for processing
-    await sendEEGData(eegData)
+    await sendEEGData(eegData, isSim);
 })
 
 

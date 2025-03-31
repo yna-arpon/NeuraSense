@@ -32,6 +32,12 @@ export class BackendManager {
 
     // Send data to ws
     sendData(data: any) {
+        // const isPhantom = true;
+        // const data = {
+        //     packet: eegData,
+        //     isPhantom
+        // }
+        
         if (this.ws && this.ws.readyState === WebSocket.OPEN) {
             this.ws.send(JSON.stringify(data));
         } else {

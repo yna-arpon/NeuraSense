@@ -89,12 +89,21 @@
             </div>
         </div>
         <div id="recordingDiv">
-            <div id="summaryInfo">
-                <div id="patientInfo">
-                    <h3 class="patientName"></h3>
-                    <button id="infoBtn"><i class="bi bi-info-circle"></i></button>
+            <div id="recordingHeader">
+                <div id="summaryInfo">
+                    <div id="patientInfo">
+                        <h3 class="patientName"></h3>
+                        <button id="infoBtn"><i class="bi bi-info-circle"></i></button>
+                    </div>
+                    <p id="todayDate"></p>
                 </div>
-                <p id="todayDate"></p>
+                <div class="switch-container">
+                    <label class="switch">
+                        <input type="checkbox" id="toggleSwitch">
+                        <span class="slider round"></span>
+                    </label>
+                    <p id="statusText">Simulation</p>
+                </div>
             </div>
             <div id="recordingContents">
                 <div id="leftContent" class="recordingContainers">

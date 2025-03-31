@@ -238,6 +238,7 @@ ipcRenderer.on("showRecordingPage", (event, patientData: {patientName: string, h
 
     // Create EEG and fNIRS graphs
     attachInfoListeners();
+    attachSwitchListener();
     createEGGraphs();
     createfNIRSGraphs();
 });
@@ -290,6 +291,15 @@ function attachInfoListeners() {
     closeBtn.addEventListener('click', () => {
         additionalInfoDiv.style.display = "none";
         document.body.classList.remove("modal-active")
+    })
+}
+
+function attachSwitchListener() {
+    const toggleSwitch = document.getElementById("toggleSwitch") as HTMLInputElement;
+
+    toggleSwitch.addEventListener("change", () => {
+        const isSim = toggleSwitch.checked;
+        ipcRenderer.send('toggleSimulation', isSim)
     })
 }
 
@@ -380,8 +390,8 @@ function createGraph(canvasId: string, borderColor: string) {
           x: { grid: { display: false } },
           y: { 
             grid: { display: false },
-            max: 2500,
-            min: -2500
+            max: 4000,
+            min: -4000
         },
         },
         plugins: {
