@@ -28,7 +28,14 @@ interface StrokeMeasures {
     RD_Beta: number,
     HI_Alpha: number,
     HI_Beta: number,
-    stroke: number
+    stroke: number,
+    ratio_flag: string,
+    rbpb_flag: string,
+    rbpa_flag: string,
+    rda_flag: string,
+    rdb_flag: string,
+    hia_flag: string,
+    hib_flag: string,
 }
 
 // ------------------------------- NAVIGATION FUNCTIONALITY -------------------------------
@@ -513,6 +520,13 @@ ipcRenderer.on('updateStrokeMeasures', (event, strokeMeasures: StrokeMeasures) =
     updateElement("betaRBP", measures.RBP_Beta);
     updateElement("dar", measures.DAR);
     updateElement("dbr", measures.DBR);
+    updateElement("ratio_flag", measures.ratio_flag);
+    updateElement("rbpa_flag", measures.rbpa_flag);
+    updateElement("rbpb_flag", measures.rbpb_flag);
+    updateElement("rda_flag", measures.rda_flag);
+    updateElement("rdb_flag", measures.rdb_flag);
+    updateElement("hia_flag", measures.hia_flag);
+    updateElement("hib_flag", measures.hib_flag);
 });
 
 function updateElement(id: string, value: number | string) {

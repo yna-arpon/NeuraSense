@@ -355,59 +355,59 @@ def stroke_assessment(ratios, rbp, rd, hi):
     # Thresholds: Ratios
     if (ratios['DAR'] > 9 and ratios['DBR'] > 22):
         flags["Ratios"] = 1 # EEG Flag = 1
-        ratio_desc = "DAR & DBR are abnormal"
+        ratio_desc = "Abnormal"
         flag_descriptions.append(ratio_desc)
     else:
-        ratio_desc = "DAR & DBR are normal"
+        ratio_desc = "Normal"
         flag_descriptions.append(ratio_desc)
     
     # Thresholds: RBP
     if (rbp['Beta'] < 0.05):
         flags["RBP Beta"] = 1
-        rbpb_desc = "Relative band power (beta) is abnormal"
+        rbpb_desc = "Abnormal"
         flag_descriptions.append(rbpb_desc)
     else:
-        rbpb_desc = "Relative band power (beta) is normal"
+        rbpb_desc = "Normal"
         flag_descriptions.append(rbpb_desc)    
     if (rbp['Alpha'] < 0.1):
         flags["RBP Alpha"] = 1
-        rbpa_desc = "Relative band power (alpha) is abnormal"
+        rbpa_desc = "Abnormal"
         flag_descriptions.append(rbpa_desc)
     else:
-        rbpa_desc = "Relative band power (alpha) is normal"
+        rbpa_desc = "Normal"
         flag_descriptions.append(rbpa_desc)    
         
     
      # Thresholds: Asymmetric Indices
     if (rd['Alpha'] > 0.076):
         flags["Relative Diff Alpha"] = 1
-        rda_desc = "Relative difference (alpha) is abnormal"
+        rda_desc = "Abnormal"
         flag_descriptions.append(rda_desc)
     else:
-        rda_desc = "Relative difference (alpha) is normal"
+        rda_desc = "Normal"
         flag_descriptions.append(rda_desc)
     if (rd['Beta'] > 0.12):
         flags["Relative Diff Beta"] = 1
-        rdb_desc = "Relative difference (beta) is abnormal"
+        rdb_desc = "Abnormal"
         flag_descriptions.append(rdb_desc)
     else:
-        rdb_desc = "Relative difference (beta) is normal"
+        rdb_desc = "Normal"
         flag_descriptions.append(rdb_desc)
     
      # Thresholds: Hemispheric Index
     if (hi['Alpha'] < 1.05):
         flags["Hemispheric Index Alpha"] = 1
-        hia_desc = 'Hemispheric index (alpha) is abnormal'
+        hia_desc = 'Abnormal'
         flag_descriptions.append(hia_desc)
     else:
-        hia_desc = 'Hemispheric index (alpha) is normal'
+        hia_desc = 'Normal'
         flag_descriptions.append(hia_desc)
     if (hi['Beta'] < 1):
         flags["Hemispheric Index Beta"] = 1
-        hib_desc = 'Hemispheric index (beta) is abnormal'
+        hib_desc = 'Abnormal'
         flag_descriptions.append(hib_desc)
     else:
-        hib_desc = 'Hemispheric index (beta) is normal'
+        hib_desc = 'Normal'
         flag_descriptions.append(hib_desc)
     
     # Decision making

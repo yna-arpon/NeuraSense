@@ -254,7 +254,7 @@ border-radius: 2px;
     display: flex;
     flex-direction: column;
     width: 92%;
-    margin: 20px;
+    margin: 20px 20px 0px 20px;
     padding-left: 15px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -280,7 +280,16 @@ border-radius: 2px;
     display: flex;
     flex-direction: column;
     width: 50%;
-    padding: 3% 0% 3% 4%;
+    padding: 1.5% 0% 1.5% 4%;
+}
+
+#summaryMeasures {
+    width: 86%;
+    padding: 1.5% 4% 1.5% 4%;
+}
+
+#summaryMeasures td:nth-child(2) {
+    text-align: right;
 }
 
 .tableHeading {
@@ -315,8 +324,6 @@ border-radius: 2px;
     color: #827f7f;;
     height: 80%;
 }
-
-
 
 #endContainer {
     display: flex;
