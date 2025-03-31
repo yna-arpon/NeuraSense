@@ -527,11 +527,34 @@ ipcRenderer.on('updateStrokeMeasures', (event, strokeMeasures: StrokeMeasures) =
     updateElement("rdb_flag", measures.rdb_flag);
     updateElement("hia_flag", measures.hia_flag);
     updateElement("hib_flag", measures.hib_flag);
+    updateStrokeRisk(measures.stroke)
 });
 
 function updateElement(id: string, value: number | string) {
     const element = document.getElementById(id);
     if (element) {
         element.textContent = value.toString();
+    }
+}
+
+function updateStrokeRisk(strokeRisk: number) {
+    const circle = document.getElementById("strokeRiskDiv") as HTMLDivElement;
+    const riskText = document.getElementById("strokeRiskLevel") as HTMLDivElement;
+    const riskLabel = document.getElementById("strokeRiskLabel") as HTMLDivElement;
+
+    if (strokeRisk) {
+        riskText.innerHTML = "HIGH";
+        riskText.style.color = "#C4396B"
+        riskLabel.style.color = "#C4396B"
+        circle.style.border = "0.5px solid #C4396B"
+        circle.style.backgroundColor = "rgba(196, 57, 107, 0.2)"
+        circle.style.boxShadow = "rgba(196, 57, 107, 0.25) 0px 8px 24px"
+    } else {
+        riskText.innerHTML = "LOW";
+        riskText.style.color = "#10900A"
+        riskLabel.style.color = "#10900A"
+        circle.style.border = "0.5px solid #10900A"
+        circle.style.backgroundColor = "rgba(16, 144, 10, 0.2)"
+        circle.style.boxShadow = "rgba(18, 144, 10, 0.25) 0px 8px 24px"
     }
 }
