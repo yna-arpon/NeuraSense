@@ -394,11 +394,15 @@ function createGraph(canvasId: string, borderColor: string) {
         maintainAspectRatio: false, // Ensure graph adapts to canvas size
         animation: false, // Disable animation for smoother updates
         scales: {
-          x: { grid: { display: false } },
+          x: { 
+            grid: { display: false },
+            min: 0, // Set minimum x-axis value
+            max: 50 // Set maximum x-axis value
+         },
           y: { 
             grid: { display: false },
-            max: 4000,
-            min: -4000
+            max: 400,
+            min: -400
         },
         },
         plugins: {

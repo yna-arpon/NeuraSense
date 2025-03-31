@@ -18,9 +18,74 @@ from queue import Queue
 
 # HELPER FUNCTIONS
 
-# BUFFER_SIZE = 750 # 30s of frames at 200 Hz (Assuming 1 frame at 200 Hz) = 30 s x 200 Hz/s = 6000 frames 
-BUFFER_SIZE = 100 # Testing buffer size
+BUFFER_SIZE = 750 # 30s of frames at 200 Hz (Assuming 1 frame at 200 Hz) = 30 s x 200 Hz/s = 6000 frames 
+# BUFFER_SIZE = 100 # Testing buffer size
 data_queue = Queue(maxsize = BUFFER_SIZE) # Initialize Queue
+
+# def collect_data(packet):
+#     """
+#     This method collects 30 seconds worth of frames from the NeuraSense application for analysis.
+#     To use this method, data must be continuously sent to this method and return values must be checked prior to sending data for processing.
+
+#     Parameters:
+#     - Packet: Frame sent by the NeuraSense app.
+
+#     Returns:
+#     - data_chunk: if Queue is full. This is an array with 6000 entries (30s of data) to serve as an input to the processing_data() method.
+#     - None: if Queue is not full
+#     """
+#     packet = json.loads(packet)
+    
+#     if state == packet['isPhantom']:
+#         if data_queue.full():
+
+#             # Size should be BUFFER_SIZE
+#             size = data_queue.qsize() 
+
+#         # Initialize array to collect data chunk
+#             data_chunk = [] 
+
+#          # Dequeue frames to gather one data chunk for processing
+#             for i in range(size):
+#                 data_chunk.append(data_queue.get_nowait()) 
+
+#         # Clear queue to collect next 30s of data
+#             data_queue.queue.clear() 
+
+#         # Send data chunk for processing
+#             return data_chunk, state
+
+#         else:
+#         # Add packets to queue until it fills up
+#             data_queue.put(packet['packet'])
+#             return None, None
+#     else: 
+#         data_queue.queue.clear()
+#         state = packet['isPhantom']
+#             # Dump out queue for processing if full
+    
+#         if data_queue.full():
+
+#         # Size should be BUFFER_SIZE
+#             size = data_queue.qsize() 
+
+#         # Initialize array to collect data chunk
+#             data_chunk = [] 
+
+#          # Dequeue frames to gather one data chunk for processing
+#             for i in range(size):
+#                 data_chunk.append(data_queue.get_nowait()) 
+
+#         # Clear queue to collect next 30s of data
+#             data_queue.queue.clear() 
+
+#         # Send data chunk for processing
+#             return data_chunk, state
+
+#         else:
+#             # Add packets to queue until it fills up
+#             data_queue.put(packet['packet'])
+#             return None, None
 
 def collect_data(packet):
     """
@@ -141,19 +206,9 @@ def processing_data (data, state):
             "hia_flag": "Normal",
             "hib_flag": "Normal",
         }
-
-        # result = 0 
-        # ratio_flag = "DAR & DBR are normal"
-        # rbpb_flag = "Relative band power (beta) is normal"
-        # rbpa_flag = "Relative band power (alpha) is normal"
-        # rda_flag = "Relative difference (alpha) is normal"
-        # rdb_flag = "Relative difference (beta) is normal"
-        # hia_flag = "Hemispheric index (alpha) is normal"
-        # hib_flag = "Hemispheric index (beta) is normal"
+        
 
     return processed_data
-
-    # return DAR, DBR, RBP_Alpha, RBP_Beta, RD_Alpha, RD_Beta, HI_Alpha, HI_Beta, result, ratio_flag, rbpb_flag, rbpa_flag, rda_flag, rdb_flag, hia_flag, hib_flag
 
 
 def find_psd(input_data, channels):
@@ -416,7 +471,7 @@ def stroke_assessment(ratios, rbp, rd, hi):
         if (flags[i] == 1):
             output += 1
     
-    if output >= 4:
+    if output >= 3:
         result = 1
     else:
         result = 0
